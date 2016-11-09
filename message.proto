@@ -1,0 +1,20 @@
+syntax = "proto3";
+option java_package = "se.umu.cs.c12mkn.protobuf";
+option java_outer_classname = "MessageProtos";
+
+message Message {
+    string id = 1;
+    string sender = 2;
+    string recipient = 3;
+    string topic = 4;
+    int64 timestamp = 5;
+    string content = 6;
+}
+
+message GetMessageRequest {
+    string id = 1;
+}
+
+service GetMessageService {
+    rpc GetMessage (GetMessageRequest) returns (Message);
+}
