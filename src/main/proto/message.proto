@@ -1,6 +1,6 @@
 syntax = "proto3";
 option java_package = "se.umu.cs.c12mkn.protobuf";
-option java_outer_classname = "MessageProtos";
+option java_multiple_files = true;
 
 message Message {
     string id = 1;
