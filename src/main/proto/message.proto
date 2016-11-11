@@ -1,5 +1,5 @@
 syntax = "proto3";
-option java_package = "se.umu.cs.c12mkn.messageservice";
+option java_package = "se.umu.cs.c12mkn.grpc";
 option java_multiple_files = true;
 
 message Message {
@@ -100,12 +100,16 @@ service MessageService {
     rpc RetrieveMessage(RetrieveMessageRequest) returns (RetrieveMessageResponse);
 
     rpc ListTopics(ListTopicsRequest) returns (ListTopicsResponse);
+}
 
+service SubscribeService {
     rpc Subscribe(SubscribeRequest) returns (SubscribeResponse);
 
     rpc Unsubscribe (UnsubscribeRequest) returns (UnsubscribeResponse);
 
     rpc ListSubscribers (ListSubscribersRequest) returns (ListSubscribersResponse);
+}
 
+service NodeService {
     rpc ListNodes (ListNodesRequest) returns (ListNodesResponse);
 }
