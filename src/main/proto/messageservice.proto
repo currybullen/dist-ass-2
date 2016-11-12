@@ -1,0 +1,83 @@
+syntax = "proto3";
+option java_package = "se.umu.cs.c12mkn.grpc";
+option java_multiple_files = true;
+
+message Empty {
+
+}
+
+message Message {
+    string id = 1;
+    string sender = 2;
+    string recipient = 3;
+    string topic = 4;
+    int64 timestamp = 5;
+    string content = 6;
+    bytes attachments = 7;
+}
+
+message Topic {
+    string value = 1;
+}
+
+message MessageList {
+    repeated string ids = 1;
+}
+
+message MessageListWithTimestampsEntry {
+    string id = 1;
+    int64 timestamp = 2;
+}
+
+message MessageListWithTimestamps {
+    repeated MessageListWithTimestampsEntry timestamps = 1;
+}
+
+message Id {
+    string value = 1;
+}
+
+message TopicList {
+    repeated string topics = 1;
+}
+
+message SubscriberInfo {
+    string username = 1;
+    string topic = 2;
+}
+
+message Succeeded {
+    bool value = 1;
+}
+
+message SubscriberList {
+    repeated string username = 1;
+}
+
+message NodeList {
+    repeated string nodes = 1;
+}
+
+service MessageService {
+    rpc PostMessage (Message) returns (Empty);
+
+    rpc ListMessages (Topic) returns (MessageList);
+
+    rpc ListMessagesWithTimestamps(Topic) returns (MessageListWithTimestamps);
+
+    rpc RetrieveMessage(Id) returns (Message);
+
+    rpc ListTopics(Empty) returns (TopicList);
+}
+
+service SubscribeService {
+    rpc Subscribe(SubscriberInfo) returns (Succeeded);
+
+    rpc Unsubscribe (SubscriberInfo) returns (Succeeded);
+
+    rpc ListSubscribers (Topic) returns (SubscriberList);
+}
+
+service NodeService {
+    rpc ListNodes (Empty) returns (NodeList);
+}
