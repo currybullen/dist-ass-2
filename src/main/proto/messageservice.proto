@@ -6,6 +6,23 @@ message Empty {
 
 }
 
+message DHParameters {
+    bytes modulus = 1;
+    bytes base = 2;
+    bytes publicKey = 3;
+    string algorithm = 4;
+}
+
+message PublicKey {
+    bytes key = 1;
+    string session = 2;
+}
+
+message SignedDHResponse {
+    PublicKey publicKey = 1;
+    bytes sign = 2;
+}
+
 message Username {
     string value = 1;
 }
@@ -14,15 +31,12 @@ message Challenge {
     string value = 1;
 }
 
-message Answer {
-    string value = 1;
-    string publicKey = 2;
+message AuthResponse {
+    string username = 1;
+    string challenge = 2;
+    string value = 3;
+    string publicKey = 4;
 }
-
-message PublicKey {
-    string value = 1;
-}
-
 
 message Message {
     string id = 1;
@@ -81,9 +95,11 @@ message EncryptedMessage {
 }
 
 service MessageService {
-    rpc InitAuth (Username) returns (Challenge);
+    rpc DHKeyExchange (DHParameters) returns (SignedDHResponse);
 
-    rpc Authenticate (Answer) returns (PublicKey);
+    rpc InitAuth (EncryptedMessage) returns (EncryptedMessage);
+
+    rpc Authenticate (EncryptedMessage) returns (EncryptedMessage);
 
     rpc PostMessage (EncryptedMessage) returns (Empty);
 
