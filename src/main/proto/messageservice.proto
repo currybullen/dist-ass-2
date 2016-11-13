@@ -58,26 +58,26 @@ message NodeList {
     repeated string nodes = 1;
 }
 
+message EncryptedMessage {
+    bytes contents = 1;
+}
+
 service MessageService {
-    rpc PostMessage (Message) returns (Empty);
+    rpc PostMessage (EncryptedMessage) returns (Empty);
 
-    rpc ListMessages (Topic) returns (MessageList);
+    rpc ListMessages (EncryptedMessage) returns (EncryptedMessage);
 
-    rpc ListMessagesWithTimestamps(Topic) returns (MessageListWithTimestamps);
+    rpc ListMessagesWithTimestamps(EncryptedMessage) returns (EncryptedMessage);
 
-    rpc RetrieveMessage(Id) returns (Message);
+    rpc RetrieveMessage(EncryptedMessage) returns (EncryptedMessage);
 
-    rpc ListTopics(Empty) returns (TopicList);
-}
+    rpc ListTopics(Empty) returns (EncryptedMessage);
 
-service SubscribeService {
-    rpc Subscribe(SubscriberInfo) returns (Succeeded);
+    rpc Subscribe(EncryptedMessage) returns (EncryptedMessage);
 
-    rpc Unsubscribe (SubscriberInfo) returns (Succeeded);
+    rpc Unsubscribe (EncryptedMessage) returns (EncryptedMessage);
 
-    rpc ListSubscribers (Topic) returns (SubscriberList);
-}
+    rpc ListSubscribers (EncryptedMessage) returns (EncryptedMessage);
 
-service NodeService {
-    rpc ListNodes (Empty) returns (NodeList);
+    rpc ListNodes (Empty) returns (EncryptedMessage);
 }
