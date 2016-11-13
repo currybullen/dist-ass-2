@@ -1,4 +1,4 @@
-package se.umu.cs.c12mkn.database;
+package se.umu.cs.c12mkn.server.database;
 
 import se.umu.cs.c12mkn.message.Message;
 
