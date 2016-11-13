@@ -14,24 +14,24 @@ import java.util.logging.Logger;
 public class MessageClient {
     private static final Logger logger = Logger.getLogger(MessageClient.class.getName());
 
-    private final ManagedChannel channel;
-    private final MessageServiceGrpc.MessageServiceBlockingStub blockingStub;
+//    private final ManagedChannel channel;
+//    private final MessageServiceGrpc.MessageServiceBlockingStub blockingStub;
 
-    public MessageClient(String host, int port) {
-        //TODO Why Plaintext?
-        channel = ManagedChannelBuilder.forAddress(host, port).usePlaintext(true).build();
-        blockingStub = MessageServiceGrpc.newBlockingStub(channel);
-    }
-
-    public void initAuth(String username) {
-        Challenge challenge = blockingStub.initAuth(Username.newBuilder().setValue(username).build());
-        if (challenge == null)
-            logger.info("initAuth did not respond, wrong username or out of challenges maybe?");
-        logger.info("Challenge received: '" + challenge.getValue() + "'.");
-    }
+//    public MessageClient(String host, int port) {
+//        //TODO Why Plaintext?
+//        channel = ManagedChannelBuilder.forAddress(host, port).usePlaintext(true).build();
+//        blockingStub = MessageServiceGrpc.newBlockingStub(channel);
+//    }
+//
+//    public void initAuth(String username) {
+//        Challenge challenge = blockingStub.initAuth(Username.newBuilder().setValue(username).build());
+//        if (challenge == null)
+//            logger.info("initAuth did not respond, wrong username or out of challenges maybe?");
+//        logger.info("Challenge received: '" + challenge.getValue() + "'.");
+//    }
 
     public static void main(String[] args) {
-        new MessageClient(args[0], Integer.parseInt(args[1])).initAuth("currybullen");
+//        new MessageClient(args[0], Integer.parseInt(args[1])).initAuth("currybullen");
     }
 }
 
