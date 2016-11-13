@@ -6,6 +6,24 @@ message Empty {
 
 }
 
+message Username {
+    string value = 1;
+}
+
+message Challenge {
+    string value = 1;
+}
+
+message Answer {
+    string value = 1;
+    string publicKey = 2;
+}
+
+message PublicKey {
+    string value = 1;
+}
+
+
 message Message {
     string id = 1;
     string sender = 2;
@@ -63,6 +81,10 @@ message EncryptedMessage {
 }
 
 service MessageService {
+    rpc InitAuth (Username) returns (Challenge);
+
+    rpc Authenticate (Answer) returns (PublicKey);
+
     rpc PostMessage (EncryptedMessage) returns (Empty);
 
     rpc ListMessages (EncryptedMessage) returns (EncryptedMessage);
