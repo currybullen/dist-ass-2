@@ -1,12 +1,40 @@
 package se.umu.cs.c12mkn.server.service;
 
+import io.grpc.stub.StreamObserver;
+import se.umu.cs.c12mkn.grpc.*;
+import se.umu.cs.c12mkn.server.security.Challenges;
+import se.umu.cs.c12mkn.server.security.InvalidUserException;
+import se.umu.cs.c12mkn.server.security.NoChallengesException;
 
-import se.umu.cs.c12mkn.grpc.MessageServiceGrpc;
+import java.util.logging.Logger;
 
 /**
  * Created by currybullen on 11/12/16.
  */
 public class MessageService extends MessageServiceGrpc.MessageServiceImplBase {
+    private static final Logger logger = Logger.getLogger(MessageService.class.getName());
+
+    @Override
+    public void initAuth(Username username, StreamObserver<Challenge> responseObserver) {
+        try {
+            String challenge = Challenges.getInstance().getChallenge(username.getValue());
+            responseObserver.onNext(Challenge.newBuilder().setValue(challenge).build());
+        } catch (InvalidUserException e) {
+            logger.info(e.getMessage());
+            e.printStackTrace();
+        } catch (NoChallengesException e) {
+            logger.info(e.getMessage());
+            e.printStackTrace();
+        }
+
+        responseObserver.onCompleted();
+    }
+
+    @Override
+    public void postMessage(EncryptedMessage encryptedMessage, StreamObserver<Empty> responseObserver) {
+
+    }
+
 //    @Override
 //    public void postMessage(Message message, StreamObserver<Empty> responseObserver) {
 //        se.umu.cs.c12mkn.message.Message messageToBeStored = new se.umu.cs.c12mkn.message.Message(message.getId(),
