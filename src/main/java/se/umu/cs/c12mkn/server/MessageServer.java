@@ -2,6 +2,7 @@ package se.umu.cs.c12mkn.server;
 
 import io.grpc.Server;
 import io.grpc.ServerBuilder;
+import se.umu.cs.c12mkn.server.security.Sign;
 import se.umu.cs.c12mkn.server.service.MessageService;
 
 import java.io.IOException;
@@ -33,6 +34,7 @@ public class MessageServer {
 
     public static void main(String[] args) {
         try {
+            Sign.getInstance().setPrivateKey(args[1]);
             MessageServer messageServer = new MessageServer(Integer.parseInt(args[0]));
             messageServer.start();
             messageServer.blockUntilShutdown();
