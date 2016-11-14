@@ -10,16 +10,15 @@ message DHParameters {
     bytes modulus = 1;
     bytes base = 2;
     bytes publicKey = 3;
-    string algorithm = 4;
 }
 
-message PublicKey {
-    bytes key = 1;
+message DHResponse {
+    bytes publicKey = 1;
     string session = 2;
 }
 
 message SignedDHResponse {
-    PublicKey publicKey = 1;
+    DHResponse dhResponse = 1;
     bytes sign = 2;
 }
 
