@@ -34,16 +34,16 @@ public class DHKeyExchange {
         return null;
     }
 
-    public static SecretKey generateSecretKey(Key privateKey, byte[] publicKey)  {
-        return generateSecretKey(privateKey, bytesToPublicKey(publicKey));
+    public static SecretKey generateSecretKey(Key privateKey, byte[] publicKey, String algorithm)  {
+        return generateSecretKey(privateKey, bytesToPublicKey(publicKey), algorithm);
     }
 
-    public static SecretKey generateSecretKey(Key privateKey, Key publicKey) {
+    public static SecretKey generateSecretKey(Key privateKey, Key publicKey, String algorithm) {
         try {
             KeyAgreement keyAgreement = KeyAgreement.getInstance("DH");
             keyAgreement.init(privateKey);
             keyAgreement.doPhase(publicKey, true);
-            return keyAgreement.generateSecret("DES");
+            return keyAgreement.generateSecret(algorithm);
         } catch (NoSuchAlgorithmException e) {
             e.printStackTrace();
         } catch (InvalidKeyException e) {
@@ -58,7 +58,7 @@ public class DHKeyExchange {
             AlgorithmParameterGenerator generator = AlgorithmParameterGenerator.getInstance("DH");
             generator.init(1024);
             AlgorithmParameters parameters = generator.generateParameters();
-            DHParameterSpec parameterSpec = (DHParameterSpec) parameters.getParameterSpec(DHParameterSpec.class);
+            DHParameterSpec parameterSpec = parameters.getParameterSpec(DHParameterSpec.class);
             return parameterSpec;
         } catch (NoSuchAlgorithmException e) {
             e.printStackTrace();
