@@ -2,6 +2,7 @@ package se.umu.cs.c12mkn.client;
 
 import se.umu.cs.c12mkn.shared.security.DHKeyExchange;
 
+import javax.crypto.SecretKey;
 import javax.crypto.spec.DHParameterSpec;
 import java.io.File;
 import java.io.IOException;
@@ -20,6 +21,7 @@ public class SessionInfo {
     private final DHParameterSpec dhParameterSpec;
     private final KeyPair dhKeys;
     private final PublicKey serverPublicSignKey;
+    private SecretKey secretKey;
 
     private SessionInfo() {
         dhParameterSpec = DHKeyExchange.generateParameters();
@@ -49,6 +51,14 @@ public class SessionInfo {
 
     public PublicKey getServerPublicSignKey() {
         return serverPublicSignKey;
+    }
+
+    public void setSecretKey(SecretKey secretKey) {
+        this.secretKey = secretKey;
+    }
+
+    public SecretKey getSecretKey() {
+        return secretKey;
     }
 
     private PublicKey loadServerPublicSignKey(String path) {
