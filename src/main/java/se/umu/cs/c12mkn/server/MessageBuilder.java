@@ -16,8 +16,9 @@ public class MessageBuilder {
                 .setPublicKey(toByteString(publicKey))
                 .setSession(session)
                 .build();
+        byte[] signature = Sign.getInstance().sign(dhResponse.toByteArray());
         return SignedDHResponse.newBuilder()
-                .setSign(toByteString(Sign.getInstance().sign(dhResponse.toByteArray())))
+                .setSign(toByteString(signature))
                 .build();
     }
 
