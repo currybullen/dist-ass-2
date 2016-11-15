@@ -10,6 +10,7 @@ message DHParameters {
     bytes modulus = 1;
     bytes base = 2;
     bytes publicKey = 3;
+    string algorithm = 4;
 }
 
 message DHResponse {
