@@ -18,6 +18,7 @@ public class MessageBuilder {
                 .build();
         byte[] signature = Sign.getInstance().sign(dhResponse.toByteArray());
         return SignedDHResponse.newBuilder()
+                .setDhResponse(dhResponse)
                 .setSign(toByteString(signature))
                 .build();
     }
