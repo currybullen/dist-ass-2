@@ -1,9 +1,11 @@
 package se.umu.cs.c12mkn.client;
 
+import com.google.protobuf.InvalidProtocolBufferException;
 import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
 import se.umu.cs.c12mkn.client.security.Verify;
 import se.umu.cs.c12mkn.grpc.*;
+import se.umu.cs.c12mkn.shared.security.Crypt;
 import se.umu.cs.c12mkn.shared.security.DHKeyExchange;
 
 import javax.crypto.SecretKey;
@@ -37,16 +39,30 @@ public class MessageClient {
             logger.info("Sender verified, creating and saving secret key.");
             SecretKey secretKey = DHKeyExchange.generateSecretKey(SessionInfo.getInstance().getDHPrivateKey(),
                     dhResponse.getPublicKey().toByteArray(), algorithm);
+            SessionInfo.getInstance().setID(dhResponse.getSession());
             SessionInfo.getInstance().setSecretKey(secretKey);
         } else {
             logger.info("Sender could not be verified!");
         }
     }
 
+    public void initAuth(String username) {
+        EncryptedMessage encryptedRequest = messageBuilder.buildUsernameMessage(username);
+        EncryptedMessage encryptedResponse = blockingStub.initAuth(encryptedRequest);
+        byte[] decryptedResponse = Crypt.decrypt(encryptedResponse.toByteArray(), SessionInfo.getInstance().getSecretKey());
+        try {
+            Challenge challenge = Challenge.parseFrom(decryptedResponse);
+            logger.info("Challenge received: '" + challenge.getValue() + "'.");
+        } catch (InvalidProtocolBufferException e) {
+            e.printStackTrace();
+        }
+    }
+
     public static void main(String[] args) {
         try {
-            new MessageClient(args[0], Integer.parseInt(args[1])).
-                    performDHKeyExchange("AES");
+            MessageClient messageClient = new MessageClient(args[0], Integer.parseInt(args[1]));
+            messageClient.performDHKeyExchange("AES");
+            messageClient.initAuth("currybullen");
         } catch (Exception e) {
             e.printStackTrace();
         }
