@@ -34,7 +34,7 @@ message Challenge {
 message AuthResponse {
     string username = 1;
     string challenge = 2;
-    string value = 3;
+    string answer = 3;
 }
 
 message Succeeded {
