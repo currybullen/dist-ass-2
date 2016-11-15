@@ -28,7 +28,7 @@ public class Crypt {
             e.printStackTrace();
         }
 
-        return new byte[0];
+        return null;
     }
 
     public static byte[] encrypt(byte[] data, SecretKey secretKey) {
@@ -50,6 +50,6 @@ public class Crypt {
             e.printStackTrace();
         }
 
-        return new byte[0];
+        return null;
     }
 }
