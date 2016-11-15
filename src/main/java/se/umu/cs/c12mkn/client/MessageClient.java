@@ -22,14 +22,15 @@ public class MessageClient {
         messageBuilder = new MessageBuilder();
     }
 
-    public void performDHKeyExchange() {
+    public void performDHKeyExchange(String algorithm) {
         SignedDHResponse signedDHResponse = blockingStub.
-                dHKeyExchange(messageBuilder.buildDHParameterMessage());
+                dHKeyExchange(messageBuilder.buildDHParameterMessage(algorithm));
     }
 
     public static void main(String[] args) {
         try {
-            new MessageClient(args[0], Integer.parseInt(args[1])).performDHKeyExchange();
+            new MessageClient(args[0], Integer.parseInt(args[1])).
+                    performDHKeyExchange("AES");
         } catch (Exception e) {
             e.printStackTrace();
         }
