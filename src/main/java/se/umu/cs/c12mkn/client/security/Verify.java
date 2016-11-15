@@ -10,7 +10,7 @@ import java.security.*;
 public class Verify {
     public static boolean verify(byte[] data, byte[] dataSignature) {
         try {
-            Signature signature = Signature.getInstance("RSA");
+            Signature signature = Signature.getInstance("SHA1withRSA");
             signature.initVerify(SessionInfo.getInstance().getServerPublicSignKey());
             signature.update(data);
             return signature.verify(dataSignature);
