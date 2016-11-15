@@ -16,11 +16,12 @@ public class MessageBuilder {
         sessionInfo = SessionInfo.getInstance();
     }
 
-    public DHParameters buildDHParameterMessage() {
+    public DHParameters buildDHParameterMessage(String algorithm) {
         return DHParameters.newBuilder()
                 .setModulus(toByteString(sessionInfo.getDHModulus()))
                 .setBase(toByteString(sessionInfo.getDHBase()))
                 .setPublicKey(toByteString(sessionInfo.getDHPublicKey()))
+                .setAlgorithm(algorithm)
                 .build();
     }
 
