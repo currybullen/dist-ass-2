@@ -29,7 +29,8 @@ public class MessageService extends MessageServiceGrpc.MessageServiceImplBase {
                 dhParameters.getModulus().toByteArray(),
                 dhParameters.getBase().toByteArray());
         SecretKey secretKey = DHKeyExchange.generateSecretKey(keyPair.getPrivate(),
-                dhParameters.getPublicKey().toByteArray());
+                dhParameters.getPublicKey().toByteArray(),
+                dhParameters.getAlgorithm());
         String session = Sessions.getInstance().createSession(secretKey);
         SignedDHResponse signedDHResponse = messageBuilder.buildSignedDHResponse(keyPair.getPublic(), session);
         responseObserver.onNext(signedDHResponse);
