@@ -44,7 +44,9 @@ public class MessageBuilder {
 
     private EncryptedMessage buildEncryptedMessage(byte[] data) {
         ByteString encryptedData = ByteString.copyFrom(Crypt.encrypt(data, sessionInfo.getSecretKey()));
-        return EncryptedMessage.newBuilder().setContents(encryptedData).build();
+        return EncryptedMessage.newBuilder().setContents(encryptedData)
+                .setSession(sessionInfo.getID())
+                .build();
     }
 
     private ByteString toByteString(BigInteger data) {
