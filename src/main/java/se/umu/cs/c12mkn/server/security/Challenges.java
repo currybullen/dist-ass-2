@@ -12,7 +12,6 @@ public class Challenges {
     private static final Challenges instance = new Challenges();
 
     private Map<String, Map<String, String>> challenges;
-    //private HashMap<String, List<String>> challenges;
 
     private Challenges() {
         challenges = new HashMap<String, Map<String, String>>();
