@@ -35,7 +35,10 @@ message AuthResponse {
     string username = 1;
     string challenge = 2;
     string value = 3;
-    string publicKey = 4;
+}
+
+message Succeeded {
+    bool value = 1;
 }
 
 message Message {
@@ -78,10 +81,6 @@ message SubscriberInfo {
     string topic = 2;
 }
 
-message Succeeded {
-    bool value = 1;
-}
-
 message SubscriberList {
     repeated string username = 1;
 }
@@ -98,24 +97,35 @@ service MessageService {
     rpc DHKeyExchange (DHParameters) returns (SignedDHResponse);
 
     rpc InitAuth (EncryptedMessage) returns (EncryptedMessage);
+    //Send Username, receive Challenge
 
     rpc Authenticate (EncryptedMessage) returns (EncryptedMessage);
+    //Send AuthResponse, receive Authenticated
 
-    rpc PostMessage (EncryptedMessage) returns (Empty);
+    rpc PostMessage (EncryptedMessage) returns (EncryptedMessage);
+    //Send Message, receive Succeeded
 
     rpc ListMessages (EncryptedMessage) returns (EncryptedMessage);
+    //Send Topic, receive MessageList
 
     rpc ListMessagesWithTimestamps(EncryptedMessage) returns (EncryptedMessage);
+    //Send Topic, receive MessageListWithTimestamps
 
     rpc RetrieveMessage(EncryptedMessage) returns (EncryptedMessage);
+    //Send Id, receive Message
 
     rpc ListTopics(Empty) returns (EncryptedMessage);
+    //Return TopicsList
 
     rpc Subscribe(EncryptedMessage) returns (EncryptedMessage);
+    //Send SubscriberInfo, receive Succeeded
 
     rpc Unsubscribe (EncryptedMessage) returns (EncryptedMessage);
+    //Send SubscriberInfo, receive Succeeded
 
     rpc ListSubscribers (EncryptedMessage) returns (EncryptedMessage);
+    //Send Topic, receive SubscriberList
 
     rpc ListNodes (Empty) returns (EncryptedMessage);
+    //Receive NodeList
 }
