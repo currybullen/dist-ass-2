@@ -21,6 +21,7 @@ public class SessionInfo {
     private final DHParameterSpec dhParameterSpec;
     private final KeyPair dhKeys;
     private final PublicKey serverPublicSignKey;
+    private String id;
     private SecretKey secretKey;
 
     private SessionInfo() {
@@ -51,6 +52,14 @@ public class SessionInfo {
 
     public PublicKey getServerPublicSignKey() {
         return serverPublicSignKey;
+    }
+
+    public void setID(String id) {
+        this.id = id;
+    }
+
+    public String getID() {
+        return id;
     }
 
     public void setSecretKey(SecretKey secretKey) {
