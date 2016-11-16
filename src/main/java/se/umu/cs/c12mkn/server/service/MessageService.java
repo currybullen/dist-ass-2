@@ -4,13 +4,12 @@ import io.grpc.stub.StreamObserver;
 import se.umu.cs.c12mkn.grpc.*;
 import se.umu.cs.c12mkn.server.MessageBuilder;
 import se.umu.cs.c12mkn.server.handler.AuthenticateCallHandler;
+import se.umu.cs.c12mkn.server.handler.DHKeyExchangeCallHandler;
 import se.umu.cs.c12mkn.server.handler.InitAuthCallHandler;
 import se.umu.cs.c12mkn.server.handler.PostMessageHandler;
 import se.umu.cs.c12mkn.server.security.Sessions;
-import se.umu.cs.c12mkn.shared.security.DHKeyExchange;
 
 import javax.crypto.SecretKey;
-import java.security.KeyPair;
 import java.util.logging.Logger;
 
 /**
@@ -28,15 +27,8 @@ public class MessageService extends MessageServiceGrpc.MessageServiceImplBase {
 
     @Override
     public void dHKeyExchange(DHParameters dhParameters, StreamObserver<SignedDHResponse> responseObserver) {
-        logger.info("DH key exchange request received.");
-        KeyPair keyPair = DHKeyExchange.generateKeyPair(
-                dhParameters.getModulus().toByteArray(),
-                dhParameters.getBase().toByteArray());
-        SecretKey secretKey = DHKeyExchange.generateSecretKey(keyPair.getPrivate(),
-                dhParameters.getPublicKey().toByteArray());
-        String session = Sessions.getInstance().createSession("AES", secretKey);
-        SignedDHResponse signedDHResponse = messageBuilder.buildSignedDHResponse(keyPair.getPublic(), session);
-        responseObserver.onNext(signedDHResponse);
+        SignedDHResponse response = new DHKeyExchangeCallHandler().handle(dhParameters);
+        responseObserver.onNext(response);
         responseObserver.onCompleted();
         logger.info("Responded to DH key exchange request.");
     }

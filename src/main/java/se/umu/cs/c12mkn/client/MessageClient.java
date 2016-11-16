@@ -65,6 +65,7 @@ public class MessageClient {
             messageClient.initAuth("currybullen");
             messageClient.authenticate("currybullen", "nkSW4rs5", "ZfDPxY5Y");
             se.umu.cs.c12mkn.message.Message message = new Message("1",5,"micke","anna","bajs","hehe","tjoho".getBytes());
+            messageClient.postMessage(message);
 
         } catch (Exception e) {
             e.printStackTrace();

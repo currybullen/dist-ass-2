@@ -12,17 +12,31 @@ import java.security.PublicKey;
  * Created by c12mkn on 11/14/16.
  */
 public class MessageBuilder {
-    public static SignedDHResponse buildSignedDHResponse(PublicKey publicKey, String session) {
-        DHResponse dhResponse = DHResponse.newBuilder()
+    public static DHResponse buildDHResponse(PublicKey publicKey, String session) {
+        return DHResponse.newBuilder()
                 .setPublicKey(toByteString(publicKey))
                 .setSession(session)
                 .build();
-        byte[] signature = Sign.getInstance().sign(dhResponse.toByteArray());
+    }
+
+    public static SignedDHResponse buildSignedDHResponse(DHResponse dhResponse, byte[] sign) {
         return SignedDHResponse.newBuilder()
                 .setDhResponse(dhResponse)
-                .setSign(toByteString(signature))
+                .setSign(toByteString(sign))
                 .build();
     }
+
+//    public static SignedDHResponse buildSignedDHResponse(PublicKey publicKey, String session) {
+//        DHResponse dhResponse = DHResponse.newBuilder()
+//                .setPublicKey(toByteString(publicKey))
+//                .setSession(session)
+//                .build();
+//        byte[] signature = Sign.getInstance().sign(dhResponse.toByteArray());
+//        return SignedDHResponse.newBuilder()
+//                .setDhResponse(dhResponse)
+//                .setSign(toByteString(signature))
+//                .build();
+//    }
 
     public static Challenge buildChallengeMessage(String challenge) {
         return Challenge.newBuilder().setValue(challenge).build();
