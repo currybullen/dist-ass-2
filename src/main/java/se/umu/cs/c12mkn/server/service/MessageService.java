@@ -60,6 +60,14 @@ public class MessageService extends MessageServiceGrpc.MessageServiceImplBase {
         responseObserver.onCompleted();
     }
 
+    @Override
+    public void listMessagesWithTimestamps(EncryptedMessage encryptedMessage, StreamObserver<EncryptedMessage> responseObserver) {
+        ListMessagesWithTimestampsCallHandler handler = new ListMessagesWithTimestampsCallHandler();
+        EncryptedMessage response = handler.handle(encryptedMessage);
+        responseObserver.onNext(response);
+        responseObserver.onCompleted();
+    }
+
     private SecretKey getSecretKey(String session) {
         return Sessions.getInstance().getSecretKey(session);
     }

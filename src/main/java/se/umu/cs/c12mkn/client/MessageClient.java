@@ -8,6 +8,7 @@ import se.umu.cs.c12mkn.message.*;
 import se.umu.cs.c12mkn.message.Message;
 
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Logger;
 
 /**
@@ -62,6 +63,15 @@ public class MessageClient {
         return handler.getIDs();
     }
 
+    public Map<String, Long> listMessagesWithTimestamps(String topic) {
+        ListMessagesWithTimestampsCallHandler handler =
+                new ListMessagesWithTimestampsCallHandler(topic);
+        EncryptedMessage request = handler.setUp();
+        EncryptedMessage response = blockingStub.listMessagesWithTimestamps(request);
+        handler.handleResponse(response);
+        return handler.getTimestamps();
+    }
+
     public static void main(String[] args) {
         try {
             MessageClient messageClient = new MessageClient(args[0], Integer.parseInt(args[1]));
@@ -72,8 +82,11 @@ public class MessageClient {
             messageClient.authenticate("currybullen", "nkSW4rs5", "ZfDPxY5Y");
             se.umu.cs.c12mkn.message.Message message = new Message("1",5,"micke","anna","bajs","hehe","tjoho".getBytes());
             messageClient.postMessage(message);
+            se.umu.cs.c12mkn.message.Message message2 = new Message("2",6,"micke","anna","bajs","hehe","tjoho".getBytes());
+            messageClient.postMessage(message2);
             Thread.sleep(1000);
             messageClient.listMessages("bajs");
+            messageClient.listMessagesWithTimestamps("bajs").get("2"));
         } catch (Exception e) {
             e.printStackTrace();
         }

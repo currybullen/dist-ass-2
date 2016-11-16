@@ -2,12 +2,11 @@ package se.umu.cs.c12mkn.server;
 
 import com.google.protobuf.ByteString;
 import se.umu.cs.c12mkn.grpc.*;
-import se.umu.cs.c12mkn.server.security.Sessions;
-import se.umu.cs.c12mkn.server.security.Sign;
-import se.umu.cs.c12mkn.shared.security.Crypt;
 
 import java.security.PublicKey;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by c12mkn on 11/14/16.
@@ -37,6 +36,16 @@ public class MessageBuilder {
 
     public static MessageList buildMessageListMessage(List<String> ids) {
         return MessageList.newBuilder().addAllIds(ids).build();
+    }
+
+    public static MessageListWithTimestamps buildMessageListWithTimestampsMessage(Map<String, Long> timestamps) {
+        List<MessageListWithTimestampsEntry> entries = new ArrayList<MessageListWithTimestampsEntry>();
+        for (Map.Entry<String, Long> entry : timestamps.entrySet())
+            entries.add(MessageListWithTimestampsEntry.newBuilder().
+                    setId(entry.getKey()).
+                    setTimestamp(entry.getValue()).
+                    build());
+        return MessageListWithTimestamps.newBuilder().addAllTimestamps(entries).build();
     }
 
     private static ByteString toByteString(PublicKey publicKey) {

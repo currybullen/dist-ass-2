@@ -32,8 +32,6 @@ public class CallHandler {
     protected byte[] decryptMessage(EncryptedMessage encryptedMessage) {
         byte[] data = null;
 
-        System.err.println("Algorithm: " + encryptedMessage.getAlgorithm());
-
         if (encryptedMessage.getAlgorithm().equals("AES")) {
             data = Crypt.decryptAES(encryptedMessage.getContents().toByteArray(),
                     SessionInfo.getInstance().getSecretKey(),
