@@ -49,6 +49,7 @@ public class MessageClient {
         try {
             MessageClient messageClient = new MessageClient(args[0], Integer.parseInt(args[1]));
             SessionInfo.getInstance().setServerPublicSignKey(args[2]);
+            SessionInfo.getInstance().setAlgorithm("AES");
             messageClient.performDHKeyExchange();
             messageClient.initAuth("currybullen");
         } catch (Exception e) {
