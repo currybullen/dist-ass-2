@@ -31,7 +31,7 @@ public class MessageBuilder {
 
     public EncryptedMessage buildUsernameMessage(String username) {
         Username message = Username.newBuilder().setValue(username).build();
-        return buildEncryptedMessage(message.toByteArray());
+        return buildAESEncryptedMessage(message.toByteArray());
     }
 
     public EncryptedMessage buildAuthResponseMessage(String username, String challenge, String answer) {
@@ -39,13 +39,16 @@ public class MessageBuilder {
                 .setChallenge(challenge)
                 .setAnswer(answer)
                 .build();
-        return buildEncryptedMessage(message.toByteArray());
+        return buildAESEncryptedMessage(message.toByteArray());
     }
 
-    private EncryptedMessage buildEncryptedMessage(byte[] data) {
-        ByteString encryptedData = ByteString.copyFrom(Crypt.encrypt(data, sessionInfo.getSecretKey()));
+    private EncryptedMessage buildAESEncryptedMessage(byte[] data) {
+        byte[] iv = Crypt.generateIV();
+        ByteString encryptedData = ByteString.copyFrom(Crypt.encryptAES(data, sessionInfo.getSecretKey(), iv));
         return EncryptedMessage.newBuilder().setContents(encryptedData)
                 .setSession(sessionInfo.getID())
+                .setAlgorithm("AES")
+                .setIv(ByteString.copyFrom(iv))
                 .build();
     }
 
