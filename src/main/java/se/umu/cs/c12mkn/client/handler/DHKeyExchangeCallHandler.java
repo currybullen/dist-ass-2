@@ -39,33 +39,4 @@ public class DHKeyExchangeCallHandler extends CallHandler {
             logger.info("Sender could not be verified!");
         }
     }
-
-//    public static DHParameters buildDHParameterMessage(String algorithm) {
-//        SessionInfo sessionInfo = SessionInfo.getInstance();
-//        return DHParameters.newBuilder()
-//                .setModulus(toByteString(sessionInfo.getDHModulus()))
-//                .setBase(toByteString(sessionInfo.getDHBase()))
-//                .setPublicKey(toByteString(sessionInfo.getDHPublicKey()))
-//                .setAlgorithm(algorithm)
-//                .build();
-//    }
-
-//    public void performDHKeyExchange(String algorithm) {
-//        SignedDHResponse signedDHResponse = blockingStub.
-//                dHKeyExchange(messageBuilder.buildDHParameterMessage(algorithm));
-//        logger.info("DH exchange request sent, using algorithm '" + algorithm + "'.");
-//        DHResponse dhResponse = signedDHResponse.getDhResponse();
-//        logger.info("DH exchange response received, verifying sender.");
-//        boolean verified = Verify.verify(dhResponse.toByteArray(),
-//                signedDHResponse.getSign().toByteArray());
-//        if (verified) {
-//            logger.info("Sender verified, creating and saving secret key.");
-//            SecretKey secretKey = DHKeyExchange.generateSecretKey(SessionInfo.getInstance().getDHPrivateKey(),
-//                    dhResponse.getPublicKey().toByteArray(), algorithm);
-//            SessionInfo.getInstance().setID(dhResponse.getSession());
-//            SessionInfo.getInstance().setSecretKey(secretKey);
-//        } else {
-//            logger.info("Sender could not be verified!");
-//        }
-//    }
 }

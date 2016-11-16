@@ -29,29 +29,9 @@ public class MessageBuilder {
                 .build();
     }
 
-//    public static DHParameters buildDHParameterMessage(String algorithm) {
-//        SessionInfo sessionInfo = SessionInfo.getInstance();
-//        return DHParameters.newBuilder()
-//                .setModulus(toByteString(sessionInfo.getDHModulus()))
-//                .setBase(toByteString(sessionInfo.getDHBase()))
-//                .setPublicKey(toByteString(sessionInfo.getDHPublicKey()))
-//                .setAlgorithm(algorithm)
-//                .build();
-//    }
-
     public static Username buildUsernameMessage(String username) {
-        SessionInfo sessionInfo = SessionInfo.getInstance();
         return Username.newBuilder().setValue(username).build();
     }
-
-    public static EncryptedMessage buildAuthResponseMessage(String username, String challenge, String answer) {
-        AuthResponse message = AuthResponse.newBuilder().setUsername(username)
-                .setChallenge(challenge)
-                .setAnswer(answer)
-                .build();
-        return buildAESEncryptedMessage(message.toByteArray());
-    }
-
     public static EncryptedMessage buildEncryptedMessage(byte[] contents,
                                                          String session,
                                                          String algorithm,
@@ -60,16 +40,6 @@ public class MessageBuilder {
                 .setSession(session)
                 .setAlgorithm(algorithm)
                 .setIv(toByteString(iv))
-                .build();
-    }
-
-    private static EncryptedMessage buildAESEncryptedMessage(byte[] data) {
-        SessionInfo sessionInfo = SessionInfo.getInstance();
-        byte[] iv = Crypt.generateIV();
-        ByteString encryptedData = ByteString.copyFrom(Crypt.encryptAES(data, sessionInfo.getSecretKey(), iv));
-        return EncryptedMessage.newBuilder().setContents(encryptedData)
-                .setSession(sessionInfo.getID())
-                .setIv(ByteString.copyFrom(iv))
                 .build();
     }
 
