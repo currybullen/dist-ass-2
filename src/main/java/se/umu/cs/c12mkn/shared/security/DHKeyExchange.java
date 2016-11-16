@@ -34,16 +34,16 @@ public class DHKeyExchange {
         return null;
     }
 
-    public static SecretKey generateSecretKey(Key privateKey, byte[] publicKey, String algorithm)  {
-        return generateSecretKey(privateKey, bytesToPublicKey(publicKey), algorithm);
+    public static SecretKey generateSecretKey(Key privateKey, byte[] publicKey)  {
+        return generateSecretKey(privateKey, bytesToPublicKey(publicKey));
     }
 
-    public static SecretKey generateSecretKey(Key privateKey, Key publicKey, String algorithm) {
+    public static SecretKey generateSecretKey(Key privateKey, Key publicKey) {
         try {
             KeyAgreement keyAgreement = KeyAgreement.getInstance("DH");
             keyAgreement.init(privateKey);
             keyAgreement.doPhase(publicKey, true);
-            return keyAgreement.generateSecret(algorithm);
+            return keyAgreement.generateSecret("AES");
         } catch (NoSuchAlgorithmException e) {
             e.printStackTrace();
         } catch (InvalidKeyException e) {
