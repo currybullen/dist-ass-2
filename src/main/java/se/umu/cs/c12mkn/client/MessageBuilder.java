@@ -20,15 +20,24 @@ public class MessageBuilder {
         sessionInfo = SessionInfo.getInstance();
     }
 
-    public static DHParameters buildDHParameterMessage(String algorithm) {
-        SessionInfo sessionInfo = SessionInfo.getInstance();
-        return DHParameters.newBuilder()
-                .setModulus(toByteString(sessionInfo.getDHModulus()))
-                .setBase(toByteString(sessionInfo.getDHBase()))
-                .setPublicKey(toByteString(sessionInfo.getDHPublicKey()))
-                .setAlgorithm(algorithm)
+    public static DHParameters buildDHParametersMessage(BigInteger modulus,
+                                                        BigInteger base,
+                                                        PublicKey publicKey) {
+        return DHParameters.newBuilder().setModulus(toByteString(modulus))
+                .setBase(toByteString(base))
+                .setPublicKey(toByteString(publicKey))
                 .build();
     }
+
+//    public static DHParameters buildDHParameterMessage(String algorithm) {
+//        SessionInfo sessionInfo = SessionInfo.getInstance();
+//        return DHParameters.newBuilder()
+//                .setModulus(toByteString(sessionInfo.getDHModulus()))
+//                .setBase(toByteString(sessionInfo.getDHBase()))
+//                .setPublicKey(toByteString(sessionInfo.getDHPublicKey()))
+//                .setAlgorithm(algorithm)
+//                .build();
+//    }
 
     public static EncryptedMessage buildUsernameMessage(String username) {
         SessionInfo sessionInfo = SessionInfo.getInstance();
@@ -50,7 +59,6 @@ public class MessageBuilder {
         ByteString encryptedData = ByteString.copyFrom(Crypt.encryptAES(data, sessionInfo.getSecretKey(), iv));
         return EncryptedMessage.newBuilder().setContents(encryptedData)
                 .setSession(sessionInfo.getID())
-                .setAlgorithm("AES")
                 .setIv(ByteString.copyFrom(iv))
                 .build();
     }
