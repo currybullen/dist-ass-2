@@ -21,7 +21,7 @@ public class InitAuthCallHandler extends CallHandler {
     }
 
     public EncryptedMessage setUp() {
-        return MessageBuilder.buildUsernameMessage(username);
+        return encryptMessage(MessageBuilder.buildUsernameMessage(username).toByteArray());
     }
 
     public void handleResponse(EncryptedMessage encryptedMessage) {
