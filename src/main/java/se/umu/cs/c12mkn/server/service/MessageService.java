@@ -3,10 +3,7 @@ package se.umu.cs.c12mkn.server.service;
 import io.grpc.stub.StreamObserver;
 import se.umu.cs.c12mkn.grpc.*;
 import se.umu.cs.c12mkn.server.MessageBuilder;
-import se.umu.cs.c12mkn.server.handler.AuthenticateCallHandler;
-import se.umu.cs.c12mkn.server.handler.DHKeyExchangeCallHandler;
-import se.umu.cs.c12mkn.server.handler.InitAuthCallHandler;
-import se.umu.cs.c12mkn.server.handler.PostMessageHandler;
+import se.umu.cs.c12mkn.server.handler.*;
 import se.umu.cs.c12mkn.server.security.Sessions;
 
 import javax.crypto.SecretKey;
@@ -50,7 +47,17 @@ public class MessageService extends MessageServiceGrpc.MessageServiceImplBase {
     @Override
     public void postMessage(EncryptedMessage encryptedMessage, StreamObserver<EncryptedMessage> responseObserver) {
         PostMessageHandler handler = new PostMessageHandler();
-        handler.handle(encryptedMessage);
+        EncryptedMessage response = handler.handle(encryptedMessage);
+        responseObserver.onNext(response);
+        responseObserver.onCompleted();
+    }
+
+    @Override
+    public void listMessages(EncryptedMessage encryptedMessage, StreamObserver<EncryptedMessage> responseObserver) {
+        ListMessagesCallHandler handler = new ListMessagesCallHandler();
+        EncryptedMessage response = handler.handle(encryptedMessage);
+        responseObserver.onNext(response);
+        responseObserver.onCompleted();
     }
 
     private SecretKey getSecretKey(String session) {

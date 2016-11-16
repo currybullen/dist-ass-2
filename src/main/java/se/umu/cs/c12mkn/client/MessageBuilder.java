@@ -42,6 +42,7 @@ public class MessageBuilder {
                 .setRecipient(message.getRecipient())
                 .setTimestamp(message.getTimestamp())
                 .setContent(message.getContent())
+                .setTopic(message.getTopic())
                 .setAttachments(toByteString(message.getAttachments()))
                 .build();
     }
@@ -51,6 +52,10 @@ public class MessageBuilder {
                 .setChallenge(challenge)
                 .setAnswer(answer)
                 .build();
+    }
+
+    public static Topic buildTopicMessage(String topic) {
+        return Topic.newBuilder().setValue(topic).build();
     }
 
     private static ByteString toByteString(byte[] data) {

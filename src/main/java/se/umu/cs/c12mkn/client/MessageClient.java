@@ -2,14 +2,12 @@ package se.umu.cs.c12mkn.client;
 
 import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
-import se.umu.cs.c12mkn.client.handler.AuthenticateCallHandler;
-import se.umu.cs.c12mkn.client.handler.DHKeyExchangeCallHandler;
-import se.umu.cs.c12mkn.client.handler.InitAuthCallHandler;
-import se.umu.cs.c12mkn.client.handler.PostMessageHandler;
+import se.umu.cs.c12mkn.client.handler.*;
 import se.umu.cs.c12mkn.grpc.*;
 import se.umu.cs.c12mkn.message.*;
 import se.umu.cs.c12mkn.message.Message;
 
+import java.util.List;
 import java.util.logging.Logger;
 
 /**
@@ -56,6 +54,14 @@ public class MessageClient {
         blockingStub.postMessage(request);
     }
 
+    public List<String> listMessages(String topic) {
+        ListMessagesCallHandler handler = new ListMessagesCallHandler(topic);
+        EncryptedMessage request = handler.setUp();
+        EncryptedMessage response = blockingStub.listMessages(request);
+        handler.handleResponse(response);
+        return handler.getIDs();
+    }
+
     public static void main(String[] args) {
         try {
             MessageClient messageClient = new MessageClient(args[0], Integer.parseInt(args[1]));
@@ -66,7 +72,8 @@ public class MessageClient {
             messageClient.authenticate("currybullen", "nkSW4rs5", "ZfDPxY5Y");
             se.umu.cs.c12mkn.message.Message message = new Message("1",5,"micke","anna","bajs","hehe","tjoho".getBytes());
             messageClient.postMessage(message);
-
+            Thread.sleep(1000);
+            messageClient.listMessages("bajs");
         } catch (Exception e) {
             e.printStackTrace();
         }
