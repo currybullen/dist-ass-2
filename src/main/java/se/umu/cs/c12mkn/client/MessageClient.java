@@ -88,6 +88,22 @@ public class MessageClient {
         return handler.getTopics();
     }
 
+    public boolean subscribe(String username, String topic) {
+        SubscribeCallHandler handler = new SubscribeCallHandler(username, topic);
+        EncryptedMessage request = handler.setUp();
+        EncryptedMessage response = blockingStub.subscribe(request);
+        handler.handleResponse(response);
+        return handler.getSucceeded();
+    }
+
+    public boolean unsubscribe(String username, String topic) {
+        UnsubscribeCallHandler handler = new UnsubscribeCallHandler(username, topic);
+        EncryptedMessage request = handler.setUp();
+        EncryptedMessage response = blockingStub.unsubscribe(request);
+        handler.handleResponse(response);
+        return handler.getSucceeded();
+    }
+
     public static void main(String[] args) {
         try {
             MessageClient messageClient = new MessageClient(args[0], Integer.parseInt(args[1]));
@@ -105,6 +121,8 @@ public class MessageClient {
             messageClient.listMessagesWithTimestamps("bajs").get("2");
             messageClient.retrieveMessage("2");
             messageClient.listTopics();
+            messageClient.subscribe("currybullen", "bajs");
+            messageClient.unsubscribe("currybullen", "bajs");
         } catch (Exception e) {
             e.printStackTrace();
         }

@@ -83,4 +83,20 @@ public class MessageService extends MessageServiceGrpc.MessageServiceImplBase {
         responseObserver.onNext(response);
         responseObserver.onCompleted();
     }
+
+    @Override
+    public void subscribe(EncryptedMessage encryptedMessage, StreamObserver<EncryptedMessage> responseObserver) {
+        SubscribeCallHandler handler = new SubscribeCallHandler();
+        EncryptedMessage response = handler.handle(encryptedMessage);
+        responseObserver.onNext(response);
+        responseObserver.onCompleted();
+    }
+
+    @Override
+    public void unsubscribe(EncryptedMessage encryptedMessage, StreamObserver<EncryptedMessage> responseObserver) {
+        UnsubscribeCallHandler handler = new UnsubscribeCallHandler();
+        EncryptedMessage response = handler.handle(encryptedMessage);
+        responseObserver.onNext(response);
+        responseObserver.onCompleted();
+    }
 }

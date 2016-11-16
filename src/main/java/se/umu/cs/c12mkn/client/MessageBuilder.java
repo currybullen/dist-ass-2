@@ -66,6 +66,10 @@ public class MessageBuilder {
         return Session.newBuilder().setValue(session).build();
     }
 
+    public static SubscriberInfo buildSubscriberInfoMessage(String username, String topic) {
+        return SubscriberInfo.newBuilder().setUsername(username).setTopic(topic).build();
+    }
+
     private static ByteString toByteString(byte[] data) {
         return ByteString.copyFrom(data);
     }
