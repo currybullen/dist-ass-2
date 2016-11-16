@@ -14,12 +14,6 @@ import java.security.PublicKey;
  * Created by c12mkn on 11/14/16.
  */
 public class MessageBuilder {
-    private SessionInfo sessionInfo;
-
-    public MessageBuilder() {
-        sessionInfo = SessionInfo.getInstance();
-    }
-
     public static DHParameters buildDHParametersMessage(BigInteger modulus,
                                                         BigInteger base,
                                                         PublicKey publicKey) {
