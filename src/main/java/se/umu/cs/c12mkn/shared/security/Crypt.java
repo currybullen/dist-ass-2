@@ -58,8 +58,8 @@ public class Crypt {
         return null;
     }
 
-    public static byte[] generateIV(int size) {
-        byte[] iv = new byte[size];
+    public static byte[] generateIV() {
+        byte[] iv = new byte[128];
         new SecureRandom().nextBytes(iv);
         return iv;
     }
