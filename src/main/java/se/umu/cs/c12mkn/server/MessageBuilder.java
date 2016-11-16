@@ -69,6 +69,10 @@ public class MessageBuilder {
         return SubscriberList.newBuilder().addAllUsername(subscribers).build();
     }
 
+    public static NodeList buildNodeList(List<String> nodes) {
+        return NodeList.newBuilder().addAllNodes(nodes).build();
+    }
+
     private static ByteString toByteString(PublicKey publicKey) {
         return toByteString(publicKey.getEncoded());
     }

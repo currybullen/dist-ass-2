@@ -107,4 +107,12 @@ public class MessageService extends MessageServiceGrpc.MessageServiceImplBase {
         responseObserver.onNext(response);
         responseObserver.onCompleted();
     }
+
+    @Override
+    public void listNodes(Session session, StreamObserver<EncryptedMessage> responseObserver) {
+        ListNodesCallHandler handler = new ListNodesCallHandler();
+        EncryptedMessage response = handler.handle(session);
+        responseObserver.onNext(response);
+        responseObserver.onCompleted();
+    }
 }

@@ -112,6 +112,14 @@ public class MessageClient {
         return handler.getSubscribers();
     }
 
+    public List<String> listNodes() {
+        ListNodesCallHandler handler = new ListNodesCallHandler();
+        Session request = handler.setUp();
+        EncryptedMessage response = blockingStub.listNodes(request);
+        handler.handleResponse(response);
+        return handler.getNodes();
+    }
+
     public static void main(String[] args) {
         try {
             MessageClient messageClient = new MessageClient(args[0], Integer.parseInt(args[1]));
@@ -129,8 +137,10 @@ public class MessageClient {
             messageClient.retrieveMessage("2");
             messageClient.listTopics();
             messageClient.subscribe("currybullen", "bajs");
+            messageClient.unsubscribe("currybullen", "bajs");
             messageClient.subscribe("paprikafix", "bajs");
             messageClient.listSubscribers("bajs");
+            messageClient.listNodes();
         } catch (Exception e) {
             e.printStackTrace();
         }
