@@ -20,7 +20,8 @@ public class MessageBuilder {
         sessionInfo = SessionInfo.getInstance();
     }
 
-    public DHParameters buildDHParameterMessage(String algorithm) {
+    public static DHParameters buildDHParameterMessage(String algorithm) {
+        SessionInfo sessionInfo = SessionInfo.getInstance();
         return DHParameters.newBuilder()
                 .setModulus(toByteString(sessionInfo.getDHModulus()))
                 .setBase(toByteString(sessionInfo.getDHBase()))
@@ -29,12 +30,13 @@ public class MessageBuilder {
                 .build();
     }
 
-    public EncryptedMessage buildUsernameMessage(String username) {
+    public static EncryptedMessage buildUsernameMessage(String username) {
+        SessionInfo sessionInfo = SessionInfo.getInstance();
         Username message = Username.newBuilder().setValue(username).build();
         return buildAESEncryptedMessage(message.toByteArray());
     }
 
-    public EncryptedMessage buildAuthResponseMessage(String username, String challenge, String answer) {
+    public static EncryptedMessage buildAuthResponseMessage(String username, String challenge, String answer) {
         AuthResponse message = AuthResponse.newBuilder().setUsername(username)
                 .setChallenge(challenge)
                 .setAnswer(answer)
@@ -42,7 +44,8 @@ public class MessageBuilder {
         return buildAESEncryptedMessage(message.toByteArray());
     }
 
-    private EncryptedMessage buildAESEncryptedMessage(byte[] data) {
+    private static EncryptedMessage buildAESEncryptedMessage(byte[] data) {
+        SessionInfo sessionInfo = SessionInfo.getInstance();
         byte[] iv = Crypt.generateIV();
         ByteString encryptedData = ByteString.copyFrom(Crypt.encryptAES(data, sessionInfo.getSecretKey(), iv));
         return EncryptedMessage.newBuilder().setContents(encryptedData)
@@ -52,11 +55,11 @@ public class MessageBuilder {
                 .build();
     }
 
-    private ByteString toByteString(BigInteger data) {
+    private static ByteString toByteString(BigInteger data) {
         return ByteString.copyFrom(data.toByteArray());
     }
 
-    private ByteString toByteString(PublicKey publicKey) {
+    private static ByteString toByteString(PublicKey publicKey) {
         return ByteString.copyFrom(publicKey.getEncoded());
     }
 }
