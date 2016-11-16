@@ -34,7 +34,7 @@ public class SessionInfo {
     }
 
     public void setServerPublicSignKey(String path) {
-        serverPublicSignKey = loadServerPublicSignKey("/home/c12/c12mkn/edu/5DV153/assignments/2/src/main/resources/certificate/pubkey");
+        serverPublicSignKey = loadServerPublicSignKey(path);
     }
 
     public PrivateKey getDHPrivateKey() {
