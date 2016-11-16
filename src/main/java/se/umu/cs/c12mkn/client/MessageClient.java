@@ -3,6 +3,7 @@ package se.umu.cs.c12mkn.client;
 import com.google.protobuf.InvalidProtocolBufferException;
 import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
+import se.umu.cs.c12mkn.client.handler.InitAuthCallHandler;
 import se.umu.cs.c12mkn.client.security.Verify;
 import se.umu.cs.c12mkn.grpc.*;
 import se.umu.cs.c12mkn.shared.security.Crypt;
@@ -46,16 +47,12 @@ public class MessageClient {
         }
     }
 
-    public void initAuth(String username) {
-        EncryptedMessage encryptedRequest = messageBuilder.buildUsernameMessage(username);
-        EncryptedMessage encryptedResponse = blockingStub.initAuth(encryptedRequest);
-        byte[] decryptedResponse = Crypt.decrypt(encryptedResponse.toByteArray(), SessionInfo.getInstance().getSecretKey());
-        try {
-            Challenge challenge = Challenge.parseFrom(decryptedResponse);
-            logger.info("Challenge received: '" + challenge.getValue() + "'.");
-        } catch (InvalidProtocolBufferException e) {
-            e.printStackTrace();
-        }
+    public String initAuth(String username) {
+        InitAuthCallHandler handler = new InitAuthCallHandler(username);
+        EncryptedMessage request = handler.setUp();
+        EncryptedMessage response = blockingStub.initAuth(request);
+        handler.handleResponse(response);
+        return handler.getChallenge();
     }
 
     public static void main(String[] args) {
