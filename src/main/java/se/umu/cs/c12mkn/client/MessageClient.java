@@ -104,6 +104,14 @@ public class MessageClient {
         return handler.getSucceeded();
     }
 
+    public List<String> listSubscribers(String topic) {
+        ListSubscribersCallHandler handler = new ListSubscribersCallHandler(topic);
+        EncryptedMessage request = handler.setUp();
+        EncryptedMessage response = blockingStub.listSubscribers(request);
+        handler.handleResponse(response);
+        return handler.getSubscribers();
+    }
+
     public static void main(String[] args) {
         try {
             MessageClient messageClient = new MessageClient(args[0], Integer.parseInt(args[1]));
@@ -116,13 +124,13 @@ public class MessageClient {
             messageClient.postMessage(message);
             se.umu.cs.c12mkn.message.Message message2 = new Message("2",6,"micke","anna","bajs1","hehe","tjoho".getBytes());
             messageClient.postMessage(message2);
-            Thread.sleep(1000);
             messageClient.listMessages("bajs");
             messageClient.listMessagesWithTimestamps("bajs").get("2");
             messageClient.retrieveMessage("2");
             messageClient.listTopics();
             messageClient.subscribe("currybullen", "bajs");
-            messageClient.unsubscribe("currybullen", "bajs");
+            messageClient.subscribe("paprikafix", "bajs");
+            messageClient.listSubscribers("bajs");
         } catch (Exception e) {
             e.printStackTrace();
         }

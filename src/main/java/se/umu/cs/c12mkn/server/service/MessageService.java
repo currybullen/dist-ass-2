@@ -99,4 +99,12 @@ public class MessageService extends MessageServiceGrpc.MessageServiceImplBase {
         responseObserver.onNext(response);
         responseObserver.onCompleted();
     }
+
+    @Override
+    public void listSubscribers(EncryptedMessage encryptedMessage, StreamObserver<EncryptedMessage> responseObserver) {
+        ListSubscribersCallHandler handler = new ListSubscribersCallHandler();
+        EncryptedMessage response = handler.handle(encryptedMessage);
+        responseObserver.onNext(response);
+        responseObserver.onCompleted();
+    }
 }

@@ -65,6 +65,10 @@ public class MessageBuilder {
         return TopicList.newBuilder().addAllTopics(topics).build();
     }
 
+    public static SubscriberList buildSubscriberList(List<String> subscribers) {
+        return SubscriberList.newBuilder().addAllUsername(subscribers).build();
+    }
+
     private static ByteString toByteString(PublicKey publicKey) {
         return toByteString(publicKey.getEncoded());
     }

@@ -133,6 +133,6 @@ service MessageService {
     rpc ListSubscribers (EncryptedMessage) returns (EncryptedMessage);
     //Send Topic, receive SubscriberList
 
-    rpc ListNodes (Empty) returns (EncryptedMessage);
+    rpc ListNodes (Session) returns (EncryptedMessage);
     //Receive NodeList
 }
