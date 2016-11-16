@@ -15,7 +15,7 @@ import java.security.PublicKey;
  * Created by c12mkn on 11/14/16.
  */
 public class MessageBuilder {
-    public SignedDHResponse buildSignedDHResponse(PublicKey publicKey, String session) {
+    public static SignedDHResponse buildSignedDHResponse(PublicKey publicKey, String session) {
         DHResponse dhResponse = DHResponse.newBuilder()
                 .setPublicKey(toByteString(publicKey))
                 .setSession(session)
@@ -27,21 +27,15 @@ public class MessageBuilder {
                 .build();
     }
 
-    public EncryptedMessage buildChallengeMessage(String challenge, String session) {
-        Challenge message = Challenge.newBuilder().setValue(challenge).build();
-        return buildEncryptedMessage(message.toByteArray(), session);
+    public static Challenge buildChallengeMessage(String challenge) {
+        return Challenge.newBuilder().setValue(challenge).build();
     }
 
-    private EncryptedMessage buildEncryptedMessage(byte[] data, String session) {
-        ByteString encryptedData = ByteString.copyFrom(Crypt.encrypt(data, Sessions.getInstance().getSecretKey(session)));
-        return EncryptedMessage.newBuilder().setContents(encryptedData).build();
-    }
-
-    private ByteString toByteString(PublicKey publicKey) {
+    private static ByteString toByteString(PublicKey publicKey) {
         return toByteString(publicKey.getEncoded());
     }
 
-    private ByteString toByteString(byte[] data) {
+    private static ByteString toByteString(byte[] data) {
         return ByteString.copyFrom(data);
     }
 }
