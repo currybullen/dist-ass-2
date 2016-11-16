@@ -1,24 +1,28 @@
 package se.umu.cs.c12mkn.shared.security;
 
 import javax.crypto.*;
+import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
+import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
+import java.security.SecureRandom;
 
 /**
  * Created by c12mkn on 11/15/16.
  */
 public class Crypt {
-    public static byte[] decrypt(byte[] data, SecretKey secretKey) {
+    public static byte[] encryptAES(byte[] data, SecretKey secretKey, byte[] iv) {
+        IvParameterSpec ivParameterSpec = new IvParameterSpec(iv);
         try {
-            Cipher cipher = Cipher.getInstance(secretKey.getAlgorithm());
-            SecretKeySpec secretKeySpec = new SecretKeySpec(secretKey.getEncoded(),
-                    secretKey.getAlgorithm());
-            cipher.init(Cipher.DECRYPT_MODE, secretKeySpec);
+            Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
+            cipher.init(Cipher.ENCRYPT_MODE, secretKey, ivParameterSpec);
             return cipher.doFinal(data);
         } catch (NoSuchAlgorithmException e) {
             e.printStackTrace();
         } catch (NoSuchPaddingException e) {
+            e.printStackTrace();
+        } catch (InvalidAlgorithmParameterException e) {
             e.printStackTrace();
         } catch (InvalidKeyException e) {
             e.printStackTrace();
@@ -31,16 +35,17 @@ public class Crypt {
         return null;
     }
 
-    public static byte[] encrypt(byte[] data, SecretKey secretKey) {
+    public static byte[] decryptAES(byte[] data, SecretKey secretKey, byte[] iv) {
+        IvParameterSpec ivParameterSpec = new IvParameterSpec(iv);
         try {
-            Cipher cipher = Cipher.getInstance(secretKey.getAlgorithm());
-            SecretKeySpec secretKeySpec = new SecretKeySpec(secretKey.getEncoded(),
-                    secretKey.getAlgorithm());
-            cipher.init(Cipher.ENCRYPT_MODE, secretKeySpec);
+            Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
+            cipher.init(Cipher.DECRYPT_MODE, secretKey, ivParameterSpec);
             return cipher.doFinal(data);
         } catch (NoSuchAlgorithmException e) {
             e.printStackTrace();
         } catch (NoSuchPaddingException e) {
+            e.printStackTrace();
+        } catch (InvalidAlgorithmParameterException e) {
             e.printStackTrace();
         } catch (InvalidKeyException e) {
             e.printStackTrace();
@@ -51,5 +56,11 @@ public class Crypt {
         }
 
         return null;
+    }
+
+    public static byte[] generateIV(int size) {
+        byte[] iv = new byte[size];
+        new SecureRandom().nextBytes(iv);
+        return iv;
     }
 }
