@@ -20,18 +20,21 @@ public class SessionInfo {
 
     private final DHParameterSpec dhParameterSpec;
     private final KeyPair dhKeys;
-    private final PublicKey serverPublicSignKey;
+    private PublicKey serverPublicSignKey;
     private String id;
     private SecretKey secretKey;
 
     private SessionInfo() {
         dhParameterSpec = DHKeyExchange.generateParameters();
         dhKeys = DHKeyExchange.generateKeyPair(dhParameterSpec.getP(), dhParameterSpec.getG());
-        serverPublicSignKey = loadServerPublicSignKey("/home/c12/c12mkn/edu/5DV153/assignments/2/src/main/resources/certificate/pubkey");
     }
 
     public static SessionInfo getInstance() {
         return instance;
+    }
+
+    public void setServerPublicSignKey(String path) {
+        serverPublicSignKey = loadServerPublicSignKey("/home/c12/c12mkn/edu/5DV153/assignments/2/src/main/resources/certificate/pubkey");
     }
 
     public PrivateKey getDHPrivateKey() {
