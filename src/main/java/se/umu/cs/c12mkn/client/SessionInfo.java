@@ -23,6 +23,7 @@ public class SessionInfo {
     private PublicKey serverPublicSignKey;
     private String id;
     private SecretKey secretKey;
+    private String algorithm;
 
     private SessionInfo() {
         dhParameterSpec = DHKeyExchange.generateParameters();
@@ -71,6 +72,14 @@ public class SessionInfo {
 
     public SecretKey getSecretKey() {
         return secretKey;
+    }
+
+    public String getAlgorithm() {
+        return algorithm;
+    }
+
+    public void setAlgorithm(String algorithm) {
+        this.algorithm = algorithm;
     }
 
     private PublicKey loadServerPublicSignKey(String path) {
