@@ -80,6 +80,14 @@ public class MessageClient {
         return handler.getMessage();
     }
 
+    public List<String> listTopics() {
+        ListTopicsHandler handler = new ListTopicsHandler();
+        Session request = handler.setUp();
+        EncryptedMessage response = blockingStub.listTopics(request);
+        handler.handleResponse(response);
+        return handler.getTopics();
+    }
+
     public static void main(String[] args) {
         try {
             MessageClient messageClient = new MessageClient(args[0], Integer.parseInt(args[1]));
@@ -90,12 +98,13 @@ public class MessageClient {
             messageClient.authenticate("currybullen", "nkSW4rs5", "ZfDPxY5Y");
             se.umu.cs.c12mkn.message.Message message = new Message("1",5,"micke","anna","bajs","hehe","tjoho".getBytes());
             messageClient.postMessage(message);
-            se.umu.cs.c12mkn.message.Message message2 = new Message("2",6,"micke","anna","bajs","hehe","tjoho".getBytes());
+            se.umu.cs.c12mkn.message.Message message2 = new Message("2",6,"micke","anna","bajs1","hehe","tjoho".getBytes());
             messageClient.postMessage(message2);
             Thread.sleep(1000);
             messageClient.listMessages("bajs");
             messageClient.listMessagesWithTimestamps("bajs").get("2");
             messageClient.retrieveMessage("2");
+            messageClient.listTopics();
         } catch (Exception e) {
             e.printStackTrace();
         }

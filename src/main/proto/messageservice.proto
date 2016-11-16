@@ -96,6 +96,10 @@ message EncryptedMessage {
     bytes iv = 4;
 }
 
+message Session {
+    string value = 1;
+}
+
 service MessageService {
     rpc DHKeyExchange (DHParameters) returns (SignedDHResponse);
 
@@ -117,7 +121,7 @@ service MessageService {
     rpc RetrieveMessage(EncryptedMessage) returns (EncryptedMessage);
     //Send Id, receive Message
 
-    rpc ListTopics(Empty) returns (EncryptedMessage);
+    rpc ListTopics(Session) returns (EncryptedMessage);
     //Return TopicsList
 
     rpc Subscribe(EncryptedMessage) returns (EncryptedMessage);

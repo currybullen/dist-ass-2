@@ -62,6 +62,10 @@ public class MessageBuilder {
         return Id.newBuilder().setValue(id).build();
     }
 
+    public static Session buildSessionMessage(String session) {
+        return Session.newBuilder().setValue(session).build();
+    }
+
     private static ByteString toByteString(byte[] data) {
         return ByteString.copyFrom(data);
     }
