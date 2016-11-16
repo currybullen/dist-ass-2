@@ -4,6 +4,7 @@ import com.google.protobuf.InvalidProtocolBufferException;
 import io.grpc.stub.StreamObserver;
 import se.umu.cs.c12mkn.grpc.*;
 import se.umu.cs.c12mkn.server.MessageBuilder;
+import se.umu.cs.c12mkn.server.handler.InitAuthCallHandler;
 import se.umu.cs.c12mkn.server.security.Challenges;
 import se.umu.cs.c12mkn.server.security.InvalidUserException;
 import se.umu.cs.c12mkn.server.security.NoChallengesException;
@@ -46,23 +47,8 @@ public class MessageService extends MessageServiceGrpc.MessageServiceImplBase {
 
     @Override
     public void initAuth(EncryptedMessage encryptedMessage, StreamObserver<EncryptedMessage> responseObserver) {
-        String session = encryptedMessage.getSession();
-        logger.info("Authentication intiated by session '" + session + "'.");
-        byte[] decrypted = Crypt.decrypt(encryptedMessage.toByteArray(), getSecretKey(session));
-        try {
-            Username username = Username.parseFrom(decrypted);
-            String challenge = Challenges.getInstance().getChallenge(username.getValue());
-            EncryptedMessage response = messageBuilder.buildChallengeMessage(challenge, session);
-            responseObserver.onNext(response);
-            logger.info("Responded to authentication initiation.");
-        } catch (Exception e) {
-            logger.info("Could not initiate authentication.");
-            e.printStackTrace();
-        } catch (NoChallengesException e) {
-            logger.info("Bad format on authentication request.");
-            e.printStackTrace();
-        }
-
+        EncryptedMessage response = new InitAuthCallHandler().handle(encryptedMessage);
+        responseObserver.onNext(response);
         responseObserver.onCompleted();
     }
 
