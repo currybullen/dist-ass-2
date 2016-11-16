@@ -59,7 +59,7 @@ public class Crypt {
     }
 
     public static byte[] generateIV() {
-        byte[] iv = new byte[128];
+        byte[] iv = new byte[16];
         new SecureRandom().nextBytes(iv);
         return iv;
     }
