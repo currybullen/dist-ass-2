@@ -92,6 +92,8 @@ message NodeList {
 message EncryptedMessage {
     bytes contents = 1;
     string session = 2;
+    string algorithm = 3;
+    bytes iv = 4;
 }
 
 service MessageService {
