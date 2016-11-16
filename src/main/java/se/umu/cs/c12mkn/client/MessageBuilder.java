@@ -39,10 +39,9 @@ public class MessageBuilder {
 //                .build();
 //    }
 
-    public static EncryptedMessage buildUsernameMessage(String username) {
+    public static Username buildUsernameMessage(String username) {
         SessionInfo sessionInfo = SessionInfo.getInstance();
-        Username message = Username.newBuilder().setValue(username).build();
-        return buildAESEncryptedMessage(message.toByteArray());
+        return Username.newBuilder().setValue(username).build();
     }
 
     public static EncryptedMessage buildAuthResponseMessage(String username, String challenge, String answer) {
@@ -53,6 +52,17 @@ public class MessageBuilder {
         return buildAESEncryptedMessage(message.toByteArray());
     }
 
+    public static EncryptedMessage buildEncryptedMessage(byte[] contents,
+                                                         String session,
+                                                         String algorithm,
+                                                         byte[] iv) {
+        return EncryptedMessage.newBuilder().setContents(toByteString(contents))
+                .setSession(session)
+                .setAlgorithm(algorithm)
+                .setIv(toByteString(iv))
+                .build();
+    }
+
     private static EncryptedMessage buildAESEncryptedMessage(byte[] data) {
         SessionInfo sessionInfo = SessionInfo.getInstance();
         byte[] iv = Crypt.generateIV();
@@ -61,6 +71,10 @@ public class MessageBuilder {
                 .setSession(sessionInfo.getID())
                 .setIv(ByteString.copyFrom(iv))
                 .build();
+    }
+
+    private static ByteString toByteString(byte[] data) {
+        return ByteString.copyFrom(data);
     }
 
     private static ByteString toByteString(BigInteger data) {
