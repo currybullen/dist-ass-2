@@ -68,7 +68,11 @@ public class MessageService extends MessageServiceGrpc.MessageServiceImplBase {
         responseObserver.onCompleted();
     }
 
-    private SecretKey getSecretKey(String session) {
-        return Sessions.getInstance().getSecretKey(session);
+    @Override
+    public void retrieveMessage(EncryptedMessage encryptedMessage, StreamObserver<EncryptedMessage> responseObserver) {
+        RetrieveMessageHandler handler = new RetrieveMessageHandler();
+        EncryptedMessage response = handler.handle(encryptedMessage);
+        responseObserver.onNext(response);
+        responseObserver.onCompleted();
     }
 }

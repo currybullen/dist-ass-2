@@ -48,6 +48,19 @@ public class MessageBuilder {
         return MessageListWithTimestamps.newBuilder().addAllTimestamps(entries).build();
     }
 
+    public static Message buildMessage(se.umu.cs.c12mkn.message.Message message) {
+        if (message == null)
+            return Message.newBuilder().build();
+        return Message.newBuilder().setId(message.getId())
+                .setSender(message.getSender())
+                .setRecipient(message.getRecipient())
+                .setTimestamp(message.getTimestamp())
+                .setContent(message.getContent())
+                .setTopic(message.getTopic())
+                .setAttachments(toByteString(message.getAttachments()))
+                .build();
+    }
+
     private static ByteString toByteString(PublicKey publicKey) {
         return toByteString(publicKey.getEncoded());
     }

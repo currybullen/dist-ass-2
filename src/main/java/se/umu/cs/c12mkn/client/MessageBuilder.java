@@ -58,6 +58,10 @@ public class MessageBuilder {
         return Topic.newBuilder().setValue(topic).build();
     }
 
+    public static Id buildIDMessage(String id) {
+        return Id.newBuilder().setValue(id).build();
+    }
+
     private static ByteString toByteString(byte[] data) {
         return ByteString.copyFrom(data);
     }

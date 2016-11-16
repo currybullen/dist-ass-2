@@ -72,6 +72,14 @@ public class MessageClient {
         return handler.getTimestamps();
     }
 
+    public Message retrieveMessage(String id) {
+        RetrieveMessageHandler handler = new RetrieveMessageHandler(id);
+        EncryptedMessage request = handler.setUp();
+        EncryptedMessage response = blockingStub.retrieveMessage(request);
+        handler.handleResponse(response);
+        return handler.getMessage();
+    }
+
     public static void main(String[] args) {
         try {
             MessageClient messageClient = new MessageClient(args[0], Integer.parseInt(args[1]));
@@ -86,7 +94,8 @@ public class MessageClient {
             messageClient.postMessage(message2);
             Thread.sleep(1000);
             messageClient.listMessages("bajs");
-            messageClient.listMessagesWithTimestamps("bajs").get("2"));
+            messageClient.listMessagesWithTimestamps("bajs").get("2");
+            messageClient.retrieveMessage("2");
         } catch (Exception e) {
             e.printStackTrace();
         }
