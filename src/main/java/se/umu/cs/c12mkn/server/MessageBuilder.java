@@ -1,10 +1,7 @@
 package se.umu.cs.c12mkn.server;
 
 import com.google.protobuf.ByteString;
-import se.umu.cs.c12mkn.grpc.Challenge;
-import se.umu.cs.c12mkn.grpc.DHResponse;
-import se.umu.cs.c12mkn.grpc.EncryptedMessage;
-import se.umu.cs.c12mkn.grpc.SignedDHResponse;
+import se.umu.cs.c12mkn.grpc.*;
 import se.umu.cs.c12mkn.server.security.Sessions;
 import se.umu.cs.c12mkn.server.security.Sign;
 import se.umu.cs.c12mkn.shared.security.Crypt;
@@ -29,6 +26,10 @@ public class MessageBuilder {
 
     public static Challenge buildChallengeMessage(String challenge) {
         return Challenge.newBuilder().setValue(challenge).build();
+    }
+
+    public static Succeeded buildSucceededMessage(boolean value) {
+        return Succeeded.newBuilder().setValue(value).build();
     }
 
     private static ByteString toByteString(PublicKey publicKey) {

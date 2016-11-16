@@ -1,15 +1,12 @@
 package se.umu.cs.c12mkn.server.service;
 
-import com.google.protobuf.InvalidProtocolBufferException;
 import io.grpc.stub.StreamObserver;
 import se.umu.cs.c12mkn.grpc.*;
 import se.umu.cs.c12mkn.server.MessageBuilder;
+import se.umu.cs.c12mkn.server.handler.AuthenticateCallHandler;
 import se.umu.cs.c12mkn.server.handler.InitAuthCallHandler;
-import se.umu.cs.c12mkn.server.security.Challenges;
-import se.umu.cs.c12mkn.server.security.InvalidUserException;
-import se.umu.cs.c12mkn.server.security.NoChallengesException;
+import se.umu.cs.c12mkn.server.handler.PostMessageHandler;
 import se.umu.cs.c12mkn.server.security.Sessions;
-import se.umu.cs.c12mkn.shared.security.Crypt;
 import se.umu.cs.c12mkn.shared.security.DHKeyExchange;
 
 import javax.crypto.SecretKey;
@@ -37,7 +34,7 @@ public class MessageService extends MessageServiceGrpc.MessageServiceImplBase {
                 dhParameters.getBase().toByteArray());
         SecretKey secretKey = DHKeyExchange.generateSecretKey(keyPair.getPrivate(),
                 dhParameters.getPublicKey().toByteArray());
-        String session = Sessions.getInstance().createSession(secretKey);
+        String session = Sessions.getInstance().createSession("AES", secretKey);
         SignedDHResponse signedDHResponse = messageBuilder.buildSignedDHResponse(keyPair.getPublic(), session);
         responseObserver.onNext(signedDHResponse);
         responseObserver.onCompleted();
@@ -49,6 +46,19 @@ public class MessageService extends MessageServiceGrpc.MessageServiceImplBase {
         EncryptedMessage response = new InitAuthCallHandler().handle(encryptedMessage);
         responseObserver.onNext(response);
         responseObserver.onCompleted();
+    }
+
+    @Override
+    public void authenticate(EncryptedMessage encryptedMessage, StreamObserver<EncryptedMessage> responseObserver) {
+        EncryptedMessage response = new AuthenticateCallHandler().handle(encryptedMessage);
+        responseObserver.onNext(response);
+        responseObserver.onCompleted();
+    }
+
+    @Override
+    public void postMessage(EncryptedMessage encryptedMessage, StreamObserver<EncryptedMessage> responseObserver) {
+        PostMessageHandler handler = new PostMessageHandler();
+        handler.handle(encryptedMessage);
     }
 
     private SecretKey getSecretKey(String session) {

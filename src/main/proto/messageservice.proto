@@ -103,7 +103,7 @@ service MessageService {
     //Send Username, receive Challenge
 
     rpc Authenticate (EncryptedMessage) returns (EncryptedMessage);
-    //Send AuthResponse, receive Authenticated
+    //Send AuthResponse, receive Succeeded
 
     rpc PostMessage (EncryptedMessage) returns (EncryptedMessage);
     //Send Message, receive Succeeded

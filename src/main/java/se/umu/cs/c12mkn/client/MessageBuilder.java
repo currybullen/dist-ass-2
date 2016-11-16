@@ -1,10 +1,9 @@
 package se.umu.cs.c12mkn.client;
 
 import com.google.protobuf.ByteString;
-import se.umu.cs.c12mkn.grpc.AuthResponse;
-import se.umu.cs.c12mkn.grpc.DHParameters;
-import se.umu.cs.c12mkn.grpc.EncryptedMessage;
-import se.umu.cs.c12mkn.grpc.Username;
+import se.umu.cs.c12mkn.grpc.*;
+import se.umu.cs.c12mkn.grpc.Message;
+import se.umu.cs.c12mkn.message.*;
 import se.umu.cs.c12mkn.shared.security.Crypt;
 
 import java.math.BigInteger;
@@ -34,6 +33,23 @@ public class MessageBuilder {
                 .setSession(session)
                 .setAlgorithm(algorithm)
                 .setIv(toByteString(iv))
+                .build();
+    }
+
+    public static Message buildMessage(se.umu.cs.c12mkn.message.Message message) {
+        return Message.newBuilder().setId(message.getId())
+                .setSender(message.getSender())
+                .setRecipient(message.getRecipient())
+                .setTimestamp(message.getTimestamp())
+                .setContent(message.getContent())
+                .setAttachments(toByteString(message.getAttachments()))
+                .build();
+    }
+
+    public static AuthResponse buildAuthResponseMessage(String username, String challenge, String answer) {
+        return AuthResponse.newBuilder().setUsername(username)
+                .setChallenge(challenge)
+                .setAnswer(answer)
                 .build();
     }
 

@@ -1,16 +1,15 @@
 package se.umu.cs.c12mkn.client;
 
-import com.google.protobuf.InvalidProtocolBufferException;
 import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
+import se.umu.cs.c12mkn.client.handler.AuthenticateCallHandler;
 import se.umu.cs.c12mkn.client.handler.DHKeyExchangeCallHandler;
 import se.umu.cs.c12mkn.client.handler.InitAuthCallHandler;
-import se.umu.cs.c12mkn.client.security.Verify;
+import se.umu.cs.c12mkn.client.handler.PostMessageHandler;
 import se.umu.cs.c12mkn.grpc.*;
-import se.umu.cs.c12mkn.shared.security.Crypt;
-import se.umu.cs.c12mkn.shared.security.DHKeyExchange;
+import se.umu.cs.c12mkn.message.*;
+import se.umu.cs.c12mkn.message.Message;
 
-import javax.crypto.SecretKey;
 import java.util.logging.Logger;
 
 /**
@@ -45,6 +44,18 @@ public class MessageClient {
         return handler.getChallenge();
     }
 
+    public void authenticate(String username, String challenge, String answer) {
+        AuthenticateCallHandler handler = new AuthenticateCallHandler(username, challenge, answer);
+        EncryptedMessage request = handler.setUp();
+        blockingStub.authenticate(request);
+    }
+
+    public void postMessage(Message message) {
+        PostMessageHandler handler = new PostMessageHandler(message);
+        EncryptedMessage request = handler.setUp();
+        blockingStub.postMessage(request);
+    }
+
     public static void main(String[] args) {
         try {
             MessageClient messageClient = new MessageClient(args[0], Integer.parseInt(args[1]));
@@ -52,6 +63,9 @@ public class MessageClient {
             SessionInfo.getInstance().setAlgorithm("AES");
             messageClient.performDHKeyExchange();
             messageClient.initAuth("currybullen");
+            messageClient.authenticate("currybullen", "nkSW4rs5", "ZfDPxY5Y");
+            se.umu.cs.c12mkn.message.Message message = new Message("1",5,"micke","anna","bajs","hehe","tjoho".getBytes());
+
         } catch (Exception e) {
             e.printStackTrace();
         }

@@ -25,7 +25,7 @@ public class InitAuthCallHandler extends CallHandler {
             Username username = Username.parseFrom(decryptMessage(encryptedMessage));
             String challengeString = Challenges.getInstance().getChallenge(username.getValue());
             Challenge challenge = MessageBuilder.buildChallengeMessage(challengeString);
-            response = encryptMessage(challenge.toByteArray(), session, encryptedMessage.getAlgorithm());
+            response = encryptMessage(challenge.toByteArray(), session);
         } catch (InvalidProtocolBufferException e) {
             e.printStackTrace();
         } catch (InvalidUserException e) {
@@ -36,26 +36,4 @@ public class InitAuthCallHandler extends CallHandler {
 
         return response;
     }
-
-//    @Override
-//    public void initAuth(EncryptedMessage encryptedMessage, StreamObserver<EncryptedMessage> responseObserver) {
-//        String session = encryptedMessage.getSession();
-//        logger.info("Authentication intiated by session '" + session + "'.");
-//        byte[] decrypted = Crypt.decrypt(encryptedMessage.toByteArray(), getSecretKey(session));
-//        try {
-//            Username username = Username.parseFrom(decrypted);
-//            String challenge = Challenges.getInstance().getChallenge(username.getValue());
-//            EncryptedMessage response = messageBuilder.buildChallengeMessage(challenge, session);
-//            responseObserver.onNext(response);
-//            logger.info("Responded to authentication initiation.");
-//        } catch (Exception e) {
-//            logger.info("Could not initiate authentication.");
-//            e.printStackTrace();
-//        } catch (NoChallengesException e) {
-//            logger.info("Bad format on authentication request.");
-//            e.printStackTrace();
-//        }
-//
-//        responseObserver.onCompleted();
-//    }
 }
