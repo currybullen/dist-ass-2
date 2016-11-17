@@ -3,7 +3,7 @@ package se.umu.cs.c12mkn.client.handler;
 import com.google.protobuf.InvalidProtocolBufferException;
 import se.umu.cs.c12mkn.client.MessageBuilder;
 import se.umu.cs.c12mkn.grpc.EncryptedMessage;
-import se.umu.cs.c12mkn.grpc.SubscriberList;
+import se.umu.cs.c12mkn.grpc.TopicList;
 
 import java.util.List;
 import java.util.logging.Logger;
@@ -11,13 +11,13 @@ import java.util.logging.Logger;
 /**
  * Created by currybullen on 11/16/16.
  */
-public class ListSubscribersCallHandler extends CallHandler {
-    private static final Logger logger = Logger.getLogger(ListSubscribersCallHandler.class.getName());
+public class ListMessagesHandler extends CallHandler {
+    private static final Logger logger = Logger.getLogger(ListMessagesHandler.class.getName());
 
     private String topic;
-    private List<String> subscribers;
+    private List<String> ids;
 
-    public ListSubscribersCallHandler(String topic) {
+    public ListMessagesHandler(String topic) {
         this.topic = topic;
     }
 
@@ -27,15 +27,15 @@ public class ListSubscribersCallHandler extends CallHandler {
 
     public void handleResponse(EncryptedMessage response) {
         try {
-            logger.info("Requesting subscriber list for topic '" + topic + "'.");
-            SubscriberList subscriberList = SubscriberList.parseFrom(decryptMessage(response));
-            this.subscribers = toStringList(subscriberList.getUsernameList());
+            TopicList topicList = TopicList.parseFrom(decryptMessage(response));
+            ids = toStringList(topicList.getTopicsList());
+            logger.info("Received a message list of length " + ids.size() + ".");
         } catch (InvalidProtocolBufferException e) {
             e.printStackTrace();
         }
     }
 
-    public List<String> getSubscribers() {
-        return subscribers;
+    public List<String> getIDs() {
+        return ids;
     }
 }

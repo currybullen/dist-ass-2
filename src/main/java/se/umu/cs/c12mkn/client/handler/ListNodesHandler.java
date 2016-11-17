@@ -13,8 +13,8 @@ import java.util.logging.Logger;
 /**
  * Created by currybullen on 11/16/16.
  */
-public class ListNodesCallHandler extends CallHandler {
-    private static final Logger logger = Logger.getLogger(ListNodesCallHandler.class.getName());
+public class ListNodesHandler extends CallHandler {
+    private static final Logger logger = Logger.getLogger(ListNodesHandler.class.getName());
 
     private List<String> nodes;
 

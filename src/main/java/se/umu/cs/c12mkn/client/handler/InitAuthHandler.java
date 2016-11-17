@@ -10,13 +10,13 @@ import java.util.logging.Logger;
 /**
  * Created by currybullen on 11/16/16.
  */
-public class InitAuthCallHandler extends CallHandler {
-    private static final Logger logger = Logger.getLogger(InitAuthCallHandler.class.getName());
+public class InitAuthHandler extends CallHandler {
+    private static final Logger logger = Logger.getLogger(InitAuthHandler.class.getName());
 
     private String username;
     private String challenge;
 
-    public InitAuthCallHandler(String username) {
+    public InitAuthHandler(String username) {
         this.username = username;
     }
 

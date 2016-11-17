@@ -10,20 +10,20 @@ import java.util.logging.Logger;
 /**
  * Created by currybullen on 11/16/16.
  */
-public class SubscribeCallHandler extends CallHandler {
-    private static final Logger logger = Logger.getLogger(SubscribeCallHandler.class.getName());
+public class UnsubscribeHandler extends CallHandler {
+    private static final Logger logger = Logger.getLogger(UnsubscribeHandler.class.getName());
     private String username;
     private String topic;
     private boolean succeeded;
 
-    public SubscribeCallHandler(String username, String topic) {
+    public UnsubscribeHandler(String username, String topic) {
         this.username = username;
         this.topic = topic;
         succeeded = false;
     }
 
     public EncryptedMessage setUp() {
-        logger.info("Sending subscribe request for user " + username + " and topic " + topic + ".");
+        logger.info("Sending unsubscribe request for user " + username + " and topic " + topic + ".");
         return encryptMessage(MessageBuilder.buildSubscriberInfoMessage(username, topic).toByteArray());
     }
 

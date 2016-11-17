@@ -18,8 +18,8 @@ import java.util.logging.Logger;
 /**
  * Created by currybullen on 11/16/16.
  */
-public class DHKeyExchangeCallHandler extends CallHandler {
-    private static final Logger logger = Logger.getLogger(DHKeyExchangeCallHandler.class.getName());
+public class DHKeyExchangeHandler extends CallHandler {
+    private static final Logger logger = Logger.getLogger(DHKeyExchangeHandler.class.getName());
 
     private PrivateKey privateKey;
 

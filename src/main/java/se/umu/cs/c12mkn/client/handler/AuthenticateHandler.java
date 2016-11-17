@@ -6,12 +6,12 @@ import se.umu.cs.c12mkn.grpc.EncryptedMessage;
 /**
  * Created by currybullen on 11/16/16.
  */
-public class AuthenticateCallHandler extends CallHandler {
+public class AuthenticateHandler extends CallHandler {
     private String username;
     private String challenge;
     private String answer;
 
-    public AuthenticateCallHandler(String username, String challenge, String answer) {
+    public AuthenticateHandler(String username, String challenge, String answer) {
         this.username = username;
         this.challenge = challenge;
         this.answer = answer;

@@ -4,7 +4,6 @@ import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
 import se.umu.cs.c12mkn.client.handler.*;
 import se.umu.cs.c12mkn.grpc.*;
-import se.umu.cs.c12mkn.message.*;
 import se.umu.cs.c12mkn.message.Message;
 
 import java.util.List;
@@ -28,7 +27,7 @@ public class MessageClient {
     }
 
     public void performDHKeyExchange() {
-        DHKeyExchangeCallHandler handler = new DHKeyExchangeCallHandler();
+        DHKeyExchangeHandler handler = new DHKeyExchangeHandler();
         DHParameters request = handler.setUp();
         logger.info("DH exchange request sent.");
         SignedDHResponse response = blockingStub.dHKeyExchange(request);
@@ -36,7 +35,7 @@ public class MessageClient {
     }
 
     public String initAuth(String username) {
-        InitAuthCallHandler handler = new InitAuthCallHandler(username);
+        InitAuthHandler handler = new InitAuthHandler(username);
         EncryptedMessage request = handler.setUp();
         EncryptedMessage response = blockingStub.initAuth(request);
         handler.handleResponse(response);
@@ -44,7 +43,7 @@ public class MessageClient {
     }
 
     public void authenticate(String username, String challenge, String answer) {
-        AuthenticateCallHandler handler = new AuthenticateCallHandler(username, challenge, answer);
+        AuthenticateHandler handler = new AuthenticateHandler(username, challenge, answer);
         EncryptedMessage request = handler.setUp();
         blockingStub.authenticate(request);
     }
@@ -56,7 +55,7 @@ public class MessageClient {
     }
 
     public List<String> listMessages(String topic) {
-        ListMessagesCallHandler handler = new ListMessagesCallHandler(topic);
+        ListMessagesHandler handler = new ListMessagesHandler(topic);
         EncryptedMessage request = handler.setUp();
         EncryptedMessage response = blockingStub.listMessages(request);
         handler.handleResponse(response);
@@ -64,8 +63,8 @@ public class MessageClient {
     }
 
     public Map<String, Long> listMessagesWithTimestamps(String topic) {
-        ListMessagesWithTimestampsCallHandler handler =
-                new ListMessagesWithTimestampsCallHandler(topic);
+        ListMessagesWithTimestampsHandler handler =
+                new ListMessagesWithTimestampsHandler(topic);
         EncryptedMessage request = handler.setUp();
         EncryptedMessage response = blockingStub.listMessagesWithTimestamps(request);
         handler.handleResponse(response);
@@ -89,7 +88,7 @@ public class MessageClient {
     }
 
     public boolean subscribe(String username, String topic) {
-        SubscribeCallHandler handler = new SubscribeCallHandler(username, topic);
+        SubscribeHandler handler = new SubscribeHandler(username, topic);
         EncryptedMessage request = handler.setUp();
         EncryptedMessage response = blockingStub.subscribe(request);
         handler.handleResponse(response);
@@ -97,7 +96,7 @@ public class MessageClient {
     }
 
     public boolean unsubscribe(String username, String topic) {
-        UnsubscribeCallHandler handler = new UnsubscribeCallHandler(username, topic);
+        UnsubscribeHandler handler = new UnsubscribeHandler(username, topic);
         EncryptedMessage request = handler.setUp();
         EncryptedMessage response = blockingStub.unsubscribe(request);
         handler.handleResponse(response);
@@ -105,7 +104,7 @@ public class MessageClient {
     }
 
     public List<String> listSubscribers(String topic) {
-        ListSubscribersCallHandler handler = new ListSubscribersCallHandler(topic);
+        ListSubscribersHandler handler = new ListSubscribersHandler(topic);
         EncryptedMessage request = handler.setUp();
         EncryptedMessage response = blockingStub.listSubscribers(request);
         handler.handleResponse(response);
@@ -113,7 +112,7 @@ public class MessageClient {
     }
 
     public List<String> listNodes() {
-        ListNodesCallHandler handler = new ListNodesCallHandler();
+        ListNodesHandler handler = new ListNodesHandler();
         Session request = handler.setUp();
         EncryptedMessage response = blockingStub.listNodes(request);
         handler.handleResponse(response);
