@@ -1,10 +1,11 @@
 package se.umu.cs.c12mkn.client.handler;
 
 import com.google.protobuf.InvalidProtocolBufferException;
-import se.umu.cs.c12mkn.client.MessageBuilder;
-import se.umu.cs.c12mkn.client.Session;
+import se.umu.cs.c12mkn.client.builder.MessageBuilder;
+import se.umu.cs.c12mkn.client.SessionInfo;
 import se.umu.cs.c12mkn.grpc.EncryptedMessage;
 import se.umu.cs.c12mkn.grpc.NodeList;
+import se.umu.cs.c12mkn.grpc.Session;
 
 import java.util.List;
 import java.util.logging.Logger;
@@ -17,9 +18,9 @@ public class ListNodesHandler extends CallHandler {
 
     private List<String> nodes;
 
-    public se.umu.cs.c12mkn.grpc.Session setUp() {
+    public Session setUp() {
         logger.info("Requesting list of nodes");
-        return MessageBuilder.buildSessionMessage(Session.getInstance().getID());
+        return MessageBuilder.buildSessionMessage(SessionInfo.getInstance().getID());
     }
 
     public boolean handleResponse(EncryptedMessage response) {

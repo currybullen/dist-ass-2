@@ -1,7 +1,7 @@
 package se.umu.cs.c12mkn.client.handler;
 
 import com.google.protobuf.InvalidProtocolBufferException;
-import se.umu.cs.c12mkn.client.MessageBuilder;
+import se.umu.cs.c12mkn.client.builder.MessageBuilder;
 import se.umu.cs.c12mkn.grpc.EncryptedMessage;
 import se.umu.cs.c12mkn.grpc.Succeeded;
 import se.umu.cs.c12mkn.message.Message;

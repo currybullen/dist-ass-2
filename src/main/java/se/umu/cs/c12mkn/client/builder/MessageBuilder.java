@@ -1,6 +1,7 @@
-package se.umu.cs.c12mkn.client;
+package se.umu.cs.c12mkn.client.builder;
 
 import com.google.protobuf.ByteString;
+import se.umu.cs.c12mkn.client.SessionInfo;
 import se.umu.cs.c12mkn.grpc.*;
 import se.umu.cs.c12mkn.grpc.Message;
 
@@ -29,6 +30,14 @@ public class MessageBuilder {
                 .setSession(session)
                 .setAlgorithm(algorithm)
                 .setIv(toByteString(iv))
+                .build();
+    }
+
+    public static EncryptedMessage buildEncryptedMessage(
+            byte[] contents, String session, String algorithm) {
+        return EncryptedMessage.newBuilder().setContents(toByteString(contents))
+                .setSession(session)
+                .setAlgorithm(algorithm)
                 .build();
     }
 

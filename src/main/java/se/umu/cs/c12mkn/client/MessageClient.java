@@ -116,8 +116,8 @@ public class MessageClient {
     public static void main(String[] args) {
         try {
             MessageClient messageClient = new MessageClient(args[0], Integer.parseInt(args[1]));
-            Session.getInstance().setServerPublicSignKey(args[2]);
-            Session.getInstance().setAlgorithm("AES");
+            SessionInfo.getInstance().setServerPublicKey(args[2]);
+            SessionInfo.getInstance().setAlgorithm("AES");
             messageClient.performDHKeyExchange();
             messageClient.initAuth("currybullen");
             messageClient.authenticate("currybullen", "nkSW4rs5", "ZfDPxY5Y");

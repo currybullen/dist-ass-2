@@ -1,9 +1,6 @@
 package se.umu.cs.c12mkn.client;
 
-import se.umu.cs.c12mkn.shared.security.DHKeyExchange;
-
 import javax.crypto.SecretKey;
-import javax.crypto.spec.DHParameterSpec;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -14,31 +11,42 @@ import java.security.spec.X509EncodedKeySpec;
 /**
  * Created by c12mkn on 11/14/16.
  */
-public class Session {
-    private static Session instance = new Session();
+public class SessionInfo {
+    private static SessionInfo instance = new SessionInfo();
 
-    private final DHParameterSpec dhParameterSpec;
-    private final KeyPair dhKeys;
-    private PublicKey serverPublicSignKey;
+    private PublicKey serverPublicKey;
+    private PrivateKey privateKey;
+    private PublicKey publicKey;
     private String id;
     private SecretKey secretKey;
     private String algorithm;
 
-    private Session() {
-        dhParameterSpec = DHKeyExchange.generateParameters();
-        dhKeys = DHKeyExchange.generateKeyPair(dhParameterSpec.getP(), dhParameterSpec.getG());
+    public PrivateKey getPrivateKey() {
+        return privateKey;
     }
 
-    public static Session getInstance() {
+    public void setPrivateKey(PrivateKey privateKey) {
+        this.privateKey = privateKey;
+    }
+
+    public PublicKey getPublicKey() {
+        return publicKey;
+    }
+
+    public void setPublicKey(PublicKey publicKey) {
+        this.publicKey = publicKey;
+    }
+
+    public static SessionInfo getInstance() {
         return instance;
     }
 
-    public void setServerPublicSignKey(String path) {
-        serverPublicSignKey = loadServerPublicSignKey(path);
+    public void setServerPublicKey(String path) {
+        serverPublicKey = loadServerPublicSignKey(path);
     }
 
-    public PublicKey getServerPublicSignKey() {
-        return serverPublicSignKey;
+    public PublicKey getServerPublicKey() {
+        return serverPublicKey;
     }
 
     public void setID(String id) {
