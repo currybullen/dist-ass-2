@@ -15,6 +15,9 @@ public class ListTopicsHandler extends CallHandler {
     private static final Logger logger = Logger.getLogger(ListTopicsHandler.class.getName());
 
     public EncryptedMessage handle(Session session) {
+        if (!validateSession(session.getValue()))
+            return null;
+
         logger.info("Received request for topic list");
         List<String> topics = Database.getInstance().getTopics();
         logger.info("Returning a topic list of length " + topics.size() + ".");

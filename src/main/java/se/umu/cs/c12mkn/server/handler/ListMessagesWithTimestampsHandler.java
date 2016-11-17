@@ -20,6 +20,9 @@ public class ListMessagesWithTimestampsHandler extends CallHandler {
     public EncryptedMessage handle(EncryptedMessage request) {
         Map<String, Long> timestamps = new HashMap<String, Long>();
 
+        if (!validateSession(request.getSession()))
+            return null;
+
         try {
             Topic topic = Topic.parseFrom(decryptMessage(request));
             logger.info("Received timestamps list request for topic '" + topic.getValue() + "'.");

@@ -16,6 +16,9 @@ public class RetrieveMessageHandler extends CallHandler {
     private static final Logger logger = Logger.getLogger(RetrieveMessageHandler.class.getName());
 
     public EncryptedMessage handle(EncryptedMessage request) {
+        if (!validateSession(request.getSession()))
+            return null;
+
         try {
             Id id = Id.parseFrom(decryptMessage(request));
             logger.info("Received a request for message with id '" +

@@ -15,6 +15,9 @@ public class UnsubscribeHandler extends CallHandler {
     private static final Logger logger = Logger.getLogger(UnsubscribeHandler.class.getName());
 
     public EncryptedMessage handle(EncryptedMessage request) {
+        if (!validateSession(request.getSession()))
+            return null;
+
         try {
             SubscriberInfo subscriberInfo =
                     SubscriberInfo.parseFrom(decryptMessage(request));

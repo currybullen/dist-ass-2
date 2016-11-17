@@ -16,6 +16,9 @@ public class ListMessagesHandler extends CallHandler {
     private static final Logger logger = Logger.getLogger(ListMessagesHandler.class.getName());
 
     public EncryptedMessage handle(EncryptedMessage request) {
+        if (!validateSession(request.getSession()))
+            return null;
+
         try {
             Topic topic = Topic.parseFrom(decryptMessage(request));
             logger.info("Received message list request for topic '" + topic.getValue() + "'.");

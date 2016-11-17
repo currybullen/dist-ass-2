@@ -15,6 +15,9 @@ public class PostMessageHandler extends CallHandler {
     private static final Logger logger = Logger.getLogger(PostMessageHandler.class.getName());
 
     public EncryptedMessage handle(EncryptedMessage request) {
+        if (validateSession(request.getSession()))
+            return null;
+
         try {
             Message message = Message.parseFrom(decryptMessage(request));
             logger.info("Message with id '" + message.getId() +

@@ -3,9 +3,7 @@ package se.umu.cs.c12mkn.server.handler;
 import com.google.protobuf.InvalidProtocolBufferException;
 import se.umu.cs.c12mkn.grpc.AuthResponse;
 import se.umu.cs.c12mkn.grpc.EncryptedMessage;
-import se.umu.cs.c12mkn.server.MessageBuilder;
 import se.umu.cs.c12mkn.server.security.Challenges;
-import se.umu.cs.c12mkn.server.security.NoSuchSessionException;
 import se.umu.cs.c12mkn.server.security.Sessions;
 
 import java.util.logging.Logger;
@@ -24,17 +22,17 @@ public class AuthenticateHandler extends CallHandler {
                     request.getSession() + "'.");
             if (validateAnswer(authResponse)) {
                 logger.info("Authentication succeeded!");
-                Sessions.getInstance().validateSession(request.getSession());
+                Sessions.getInstance().authenticateSession(request.getSession());
                 return buildEncryptedSuccessMessage(true, request.getSession());
             }
+
+            logger.info("Authentication failed!");
+            return buildEncryptedSuccessMessage(false, request.getSession());
         } catch (InvalidProtocolBufferException e) {
-            e.printStackTrace();
-        } catch (NoSuchSessionException e) {
             e.printStackTrace();
         }
 
-        logger.info("Authentication failed!");
-        return buildEncryptedSuccessMessage(false, request.getSession());
+        return null;
     }
 
     private boolean validateAnswer(AuthResponse authResponse) {

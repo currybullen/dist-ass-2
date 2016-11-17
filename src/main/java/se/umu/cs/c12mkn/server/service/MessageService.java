@@ -4,6 +4,7 @@ import io.grpc.stub.StreamObserver;
 import se.umu.cs.c12mkn.grpc.*;
 import se.umu.cs.c12mkn.server.MessageBuilder;
 import se.umu.cs.c12mkn.server.handler.*;
+import se.umu.cs.c12mkn.server.security.Sessions;
 
 import java.util.logging.Logger;
 
@@ -11,13 +12,8 @@ import java.util.logging.Logger;
  * Created by currybullen on 11/12/16.
  */
 public class MessageService extends MessageServiceGrpc.MessageServiceImplBase {
-    private static final Logger logger = Logger.getLogger(MessageService.class.getName());
-
-    private final MessageBuilder messageBuilder;
-
     public MessageService() {
         super();
-        messageBuilder = new MessageBuilder();
     }
 
     @Override
@@ -25,7 +21,6 @@ public class MessageService extends MessageServiceGrpc.MessageServiceImplBase {
         SignedDHResponse response = new DHKeyExchangeHandler().handle(dhParameters);
         responseObserver.onNext(response);
         responseObserver.onCompleted();
-        logger.info("Responded to DH key exchange request.");
     }
 
     @Override

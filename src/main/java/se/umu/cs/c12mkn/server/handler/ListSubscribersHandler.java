@@ -16,6 +16,9 @@ public class ListSubscribersHandler extends CallHandler {
     private static final Logger logger = Logger.getLogger(ListSubscribersHandler.class.getName());
 
     public EncryptedMessage handle(EncryptedMessage request) {
+        if (!validateSession(request.getSession()))
+            return null;
+
         try {
             Topic topic = Topic.parseFrom(decryptMessage(request));
             logger.info("Received request for subscriber list for topic '" +

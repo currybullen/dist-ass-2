@@ -40,11 +40,9 @@ public class Sessions {
         return id;
     }
 
-    public void validateSession(String id) throws NoSuchSessionException {
+    public void authenticateSession(String id) {
         if (ids.get(id) != null)
             ids.put(id, true);
-        else
-            throw new NoSuchSessionException("No session exists for session id '" + id + "'.");
     }
 
     public boolean isValidSession(String id) {

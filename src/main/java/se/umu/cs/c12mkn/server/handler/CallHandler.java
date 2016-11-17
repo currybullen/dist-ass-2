@@ -69,4 +69,8 @@ public class CallHandler {
         Succeeded message = MessageBuilder.buildSucceededMessage(succeeded);
         return encryptMessage(message.toByteArray(), session);
     }
+
+    protected boolean validateSession(String session) {
+        return sessions.isValidSession(session);
+    }
 }

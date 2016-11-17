@@ -1,8 +1,10 @@
 package se.umu.cs.c12mkn.server.security;
 
+import se.umu.cs.c12mkn.server.security.exception.NoChallengesException;
+import se.umu.cs.c12mkn.server.security.exception.NoSuchUsernameException;
+
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -35,11 +37,12 @@ public class Challenges {
         return instance;
     }
 
-    public synchronized String getChallenge(String username) throws InvalidUserException, NoChallengesException {
+    public synchronized String getChallenge(String username)
+            throws NoSuchUsernameException, NoChallengesException {
         if (challenges.get(username) == null)
-            throw new InvalidUserException("No such user '" + username  + "'.");
+            throw new NoSuchUsernameException("No user '" + username + "' exists.");
         if (challenges.get(username).isEmpty())
-            throw new NoChallengesException("No more challenges available for '" + username + "'.");
+            throw new NoChallengesException("No challenges exists for user '" + username + "'.");
         return new ArrayList<String>(challenges.get(username).keySet()).get(0);
     }
 
