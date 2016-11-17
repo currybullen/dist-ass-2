@@ -6,6 +6,7 @@ import se.umu.cs.c12mkn.server.security.Sign;
 import se.umu.cs.c12mkn.server.service.MessageService;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.logging.Logger;
 
 /**
@@ -17,8 +18,10 @@ public class MessageServer {
     private final int port;
     private final Server server;
 
-    public MessageServer(int port) throws IOException {
+    public MessageServer(int port, byte[] publicKey, byte[] privateKey) throws IOException {
         this.port = port;
+        ServerInfo.getInstance().setPublicKey(publicKey);
+        ServerInfo.getInstance().setPrivateKey(privateKey);
         server = ServerBuilder.forPort(port).addService(new MessageService()).build();
     }
 
@@ -30,17 +33,5 @@ public class MessageServer {
     public void blockUntilShutdown() throws InterruptedException {
         if (server != null)
             server.awaitTermination();
-    }
-
-    public static void main(String[] args) {
-        try {
-            ServerInfo.getInstance().setPrivateKey(args[1]);
-            ServerInfo.getInstance().setPublicKey(args[2]);
-            MessageServer messageServer = new MessageServer(Integer.parseInt(args[0]));
-            messageServer.start();
-            messageServer.blockUntilShutdown();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
     }
 }
