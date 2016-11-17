@@ -38,22 +38,6 @@ public class SessionInfo {
         serverPublicSignKey = loadServerPublicSignKey(path);
     }
 
-    public PrivateKey getDHPrivateKey() {
-        return dhKeys.getPrivate();
-    }
-
-    public PublicKey getDHPublicKey() {
-        return dhKeys.getPublic();
-    }
-
-    public BigInteger getDHModulus() {
-        return dhParameterSpec.getP();
-    }
-
-    public BigInteger getDHBase() {
-        return dhParameterSpec.getG();
-    }
-
     public PublicKey getServerPublicSignKey() {
         return serverPublicSignKey;
     }

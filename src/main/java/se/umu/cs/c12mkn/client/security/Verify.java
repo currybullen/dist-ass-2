@@ -1,17 +1,15 @@
 package se.umu.cs.c12mkn.client.security;
 
-import se.umu.cs.c12mkn.client.SessionInfo;
-
 import java.security.*;
 
 /**
  * Created by c12mkn on 11/14/16.
  */
 public class Verify {
-    public static boolean verify(byte[] data, byte[] dataSignature) {
+    public static boolean verify(byte[] data, byte[] dataSignature, PublicKey publicKey) {
         try {
             Signature signature = Signature.getInstance("SHA1withRSA");
-            signature.initVerify(SessionInfo.getInstance().getServerPublicSignKey());
+            signature.initVerify(publicKey);
             signature.update(data);
             return signature.verify(dataSignature);
         } catch (NoSuchAlgorithmException e) {
