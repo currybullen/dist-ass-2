@@ -32,7 +32,7 @@ public class DHKeyExchangeHandler extends CallHandler {
         return MessageBuilder.buildDHParametersMessage(modulus, base, keyPair.getPublic());
     }
 
-    public void handleResponse(SignedDHResponse signedDHResponse) {
+    public boolean handleResponse(SignedDHResponse signedDHResponse) {
         logger.info("DH exchange response received, verifying sender.");
         DHResponse dhResponse = signedDHResponse.getDhResponse();
         byte[] sign = signedDHResponse.getSign().toByteArray();
@@ -43,8 +43,10 @@ public class DHKeyExchangeHandler extends CallHandler {
                     publicKey);
             SessionInfo.getInstance().setID(dhResponse.getSession());
             SessionInfo.getInstance().setSecretKey(secretKey);
+            return true;
         } else {
             logger.info("Sender could not be verified!");
+            return false;
         }
     }
 
