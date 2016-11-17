@@ -1,7 +1,10 @@
 package se.umu.cs.c12mkn.server;
 
+import com.google.common.io.ByteStreams;
+
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.nio.file.Files;
 import java.security.*;
 import java.security.spec.InvalidKeySpecException;
@@ -25,17 +28,14 @@ public class ServerInfo {
         return instance;
     }
 
-    public void setPublicKey(String path) {
+    public void setPublicKey(byte[] keyBytes) {
         try {
-            byte[] keyBytes = Files.readAllBytes(new File(path).toPath());
             X509EncodedKeySpec x509EncodedKeySpec = new X509EncodedKeySpec(keyBytes);
             KeyFactory keyFactory = KeyFactory.getInstance("RSA");
             publicKey = keyFactory.generatePublic(x509EncodedKeySpec);
         } catch (NoSuchAlgorithmException e) {
             e.printStackTrace();
         } catch (InvalidKeySpecException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
             e.printStackTrace();
         }
     }
@@ -44,17 +44,14 @@ public class ServerInfo {
         return publicKey;
     }
 
-    public void setPrivateKey(String path) {
+    public void setPrivateKey(byte[] keyBytes) {
         try {
-            byte[] keyBytes = Files.readAllBytes(new File(path).toPath());
             PKCS8EncodedKeySpec pkcs8EncodedKeySpec = new PKCS8EncodedKeySpec(keyBytes);
             KeyFactory keyFactory = KeyFactory.getInstance("RSA");
             privateKey = keyFactory.generatePrivate(pkcs8EncodedKeySpec);
         } catch (NoSuchAlgorithmException e) {
             e.printStackTrace();
         } catch (InvalidKeySpecException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
             e.printStackTrace();
         }
     }
