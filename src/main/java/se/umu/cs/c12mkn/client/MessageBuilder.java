@@ -11,9 +11,8 @@ import java.security.PublicKey;
  * Created by c12mkn on 11/14/16.
  */
 public class MessageBuilder {
-    public static DHParameters buildDHParametersMessage(BigInteger modulus,
-                                                        BigInteger base,
-                                                        PublicKey publicKey) {
+    public static DHParameters buildDHParametersMessage(
+            BigInteger modulus, BigInteger base, PublicKey publicKey) {
         return DHParameters.newBuilder().setModulus(toByteString(modulus))
                 .setBase(toByteString(base))
                 .setPublicKey(toByteString(publicKey))
@@ -24,10 +23,8 @@ public class MessageBuilder {
         return Username.newBuilder().setValue(username).build();
     }
 
-    public static EncryptedMessage buildEncryptedMessage(byte[] contents,
-                                                         String session,
-                                                         String algorithm,
-                                                         byte[] iv) {
+    public static EncryptedMessage buildEncryptedMessage(
+            byte[] contents, String session, String algorithm, byte[] iv) {
         return EncryptedMessage.newBuilder().setContents(toByteString(contents))
                 .setSession(session)
                 .setAlgorithm(algorithm)
@@ -46,7 +43,8 @@ public class MessageBuilder {
                 .build();
     }
 
-    public static AuthResponse buildAuthResponseMessage(String username, String challenge, String answer) {
+    public static AuthResponse buildAuthResponseMessage(
+            String username, String challenge, String answer) {
         return AuthResponse.newBuilder().setUsername(username)
                 .setChallenge(challenge)
                 .setAnswer(answer)
@@ -65,8 +63,10 @@ public class MessageBuilder {
         return Session.newBuilder().setValue(session).build();
     }
 
-    public static SubscriberInfo buildSubscriberInfoMessage(String username, String topic) {
-        return SubscriberInfo.newBuilder().setUsername(username).setTopic(topic).build();
+    public static SubscriberInfo buildSubscriberInfoMessage(
+            String username, String topic) {
+        return SubscriberInfo.newBuilder().setUsername(username).
+                setTopic(topic).build();
     }
 
     private static ByteString toByteString(byte[] data) {
