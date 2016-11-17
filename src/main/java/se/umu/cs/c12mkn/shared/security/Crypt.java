@@ -3,6 +3,7 @@ package se.umu.cs.c12mkn.shared.security;
 import javax.crypto.*;
 import javax.crypto.spec.IvParameterSpec;
 import java.security.*;
+import java.util.Random;
 
 /**
  * Created by c12mkn on 11/15/16.
@@ -92,6 +93,22 @@ public class Crypt {
         }
 
         return null;
+    }
+
+    public static byte[] encryptCustom(byte[] data) {
+        byte[] encrypted = new byte[data.length*2];
+        new Random().nextBytes(encrypted);
+        for (int i = 0; i < data.length; i++) {
+            encrypted[i*2] = data[i];
+        }
+        return encrypted;
+    }
+
+    public static byte[] decryptCustom(byte[] data) {
+        byte[] decrypted = new byte[data.length/2];
+        for (int i = 0; i < data.length/2; i++)
+            decrypted[i] = data[i*2];
+        return decrypted;
     }
 
     public static byte[] generateIV() {

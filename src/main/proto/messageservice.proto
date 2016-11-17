@@ -105,6 +105,9 @@ message Session {
 }
 
 service MessageService {
+    rpc SetUpCustomEncryption(Empty) returns (EncryptedMessage);
+    //Receive Session
+
     rpc RSAKeyExchange (RSARequest) returns (Session);
 
     rpc DHKeyExchange (DHParameters) returns (SignedDHResponse);

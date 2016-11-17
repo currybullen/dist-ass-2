@@ -32,8 +32,8 @@ public class CallHandler {
         } else if (algorithm.equals("RSA")) {
             encryptedData = Crypt.encryptRSA(data,
                     sessionInfo.getServerPublicKey());
-        } else if (algorithm.equals("myAlgorithm")) {
-            //TODO: Implement custom algorithm call
+        } else if (algorithm.equals("custom")) {
+            encryptedData = Crypt.encryptCustom(data);
         } else {
             return null;
         }
@@ -54,8 +54,8 @@ public class CallHandler {
                     SessionInfo.getInstance().getSecretKey(), iv);
         } else if (algorithm.equals("RSA")) {
             return Crypt.decryptRSA(contents, sessionInfo.getPrivateKey());
-        } else if (algorithm.equals("myAlgorithm")) {
-            //TODO Implement custom algorithm call
+        } else if (algorithm.equals("custom")) {
+            return Crypt.decryptCustom(contents);
         }
 
         return null;

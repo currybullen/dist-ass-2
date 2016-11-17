@@ -30,8 +30,8 @@ public class CallHandler {
         } else if (algorithm.equals("RSA")) {
             return Crypt.decryptRSA(data,
                     ServerInfo.getInstance().getPrivateKey());
-        } else if (algorithm.equals("customAlgorithm")) {
-            //TODO: Custom algorithm decrypt call
+        } else if (algorithm.equals("custom")) {
+            return Crypt.decryptCustom(data);
         }
 
         return null;
@@ -39,15 +39,15 @@ public class CallHandler {
 
     protected EncryptedMessage encryptMessage(byte[] data, String session) {
         byte[] iv = null;
-        byte[] contents = null;
+        byte[] contents;
         String algorithm = sessions.getAlgorithm(session);
         if (algorithm.equals("AES")) {
             iv = Crypt.generateIV();
             contents = Crypt.encryptAES(data, sessions.getSecretKey(session), iv);
         } else if (algorithm.equals("RSA")) {
             contents = Crypt.encryptRSA(data, sessions.getPublicKey(session));
-        } else if (algorithm.equals("customAlgorithm")) {
-            //TODO: Custom algoritmh encrypt call
+        } else if (algorithm.equals("custom")) {
+            contents = Crypt.encryptCustom(data);
         } else {
             return null;
         }

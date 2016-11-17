@@ -117,4 +117,11 @@ public class MessageService extends MessageServiceGrpc.MessageServiceImplBase {
         responseObserver.onCompleted();
     }
 
+    @Override
+    public void setUpCustomEncryption(Empty empty, StreamObserver<EncryptedMessage> responseObserver) {
+        SetUpCustomEncryptionHandler handler = new SetUpCustomEncryptionHandler();
+        EncryptedMessage response = handler.handle();
+        responseObserver.onNext(response);
+        responseObserver.onCompleted();
+    }
 }

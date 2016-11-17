@@ -21,6 +21,13 @@ public class MessageClient {
         blockingStub = MessageServiceGrpc.newBlockingStub(channel);
     }
 
+    public boolean setUpCustomEncryption() {
+        SetUpCustomEncryptionHandler handler = new SetUpCustomEncryptionHandler();
+        Empty request = handler.setUp();
+        EncryptedMessage response = blockingStub.setUpCustomEncryption(request);
+        return handler.handleResponse(response);
+    }
+
     public boolean rsaKeyExchange() {
         RSAKeyExchangeHandler handler = new RSAKeyExchangeHandler();
         RSARequest request = handler.setUp();
@@ -125,7 +132,8 @@ public class MessageClient {
             MessageClient messageClient = new MessageClient(args[0], Integer.parseInt(args[1]));
             SessionInfo.getInstance().setServerPublicKey(args[2]);
             //messageClient.performDHKeyExchange();
-            messageClient.rsaKeyExchange();
+            //messageClient.rsaKeyExchange();
+            messageClient.setUpCustomEncryption();
             messageClient.initAuth("currybullen");
             messageClient.authenticate("currybullen", "nkSW4rs5", "ZfDPxY5Y");
             se.umu.cs.c12mkn.message.Message message = new Message("1",5,"micke","anna","bajs","hehe","tjoho".getBytes());
