@@ -34,7 +34,8 @@ public class MessageServer {
 
     public static void main(String[] args) {
         try {
-            Sign.getInstance().setPrivateKey(args[1]);
+            ServerInfo.getInstance().setPrivateKey(args[1]);
+            ServerInfo.getInstance().setPublicKey(args[2]);
             MessageServer messageServer = new MessageServer(Integer.parseInt(args[0]));
             messageServer.start();
             messageServer.blockUntilShutdown();

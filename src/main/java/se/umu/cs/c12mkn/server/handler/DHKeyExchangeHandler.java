@@ -4,6 +4,7 @@ import se.umu.cs.c12mkn.grpc.DHParameters;
 import se.umu.cs.c12mkn.grpc.DHResponse;
 import se.umu.cs.c12mkn.grpc.SignedDHResponse;
 import se.umu.cs.c12mkn.server.MessageBuilder;
+import se.umu.cs.c12mkn.server.ServerInfo;
 import se.umu.cs.c12mkn.server.security.Sessions;
 import se.umu.cs.c12mkn.server.security.Sign;
 import se.umu.cs.c12mkn.shared.security.DHKeyExchange;
@@ -35,6 +36,6 @@ public class DHKeyExchangeHandler {
     }
 
     private byte[] sign(byte[] data) {
-        return Sign.getInstance().sign(data);
+        return Sign.sign(data, ServerInfo.getInstance().getPrivateKey());
     }
 }
