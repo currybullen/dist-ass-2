@@ -6,7 +6,6 @@ import javax.crypto.SecretKey;
 import javax.crypto.spec.DHParameterSpec;
 import java.io.File;
 import java.io.IOException;
-import java.math.BigInteger;
 import java.nio.file.Files;
 import java.security.*;
 import java.security.spec.InvalidKeySpecException;

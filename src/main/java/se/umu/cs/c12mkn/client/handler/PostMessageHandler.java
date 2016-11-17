@@ -13,7 +13,8 @@ import java.util.logging.Logger;
  */
 public class PostMessageHandler extends CallHandler {
     private static final Logger logger = Logger.getLogger(PostMessageHandler.class.getName());
-    private Message message;
+
+    private final Message message;
 
     public PostMessageHandler(Message message) {
         this.message = message;

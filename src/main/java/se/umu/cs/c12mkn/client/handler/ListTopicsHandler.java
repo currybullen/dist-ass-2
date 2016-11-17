@@ -15,6 +15,7 @@ import java.util.logging.Logger;
  */
 public class ListTopicsHandler extends CallHandler {
     private static final Logger logger = Logger.getLogger(ListTopicsHandler.class.getName());
+
     private List<String> topics;
 
     public Session setUp() {

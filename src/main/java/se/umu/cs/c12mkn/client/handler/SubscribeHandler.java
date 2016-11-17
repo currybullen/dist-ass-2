@@ -12,8 +12,9 @@ import java.util.logging.Logger;
  */
 public class SubscribeHandler extends CallHandler {
     private static final Logger logger = Logger.getLogger(SubscribeHandler.class.getName());
-    private String username;
-    private String topic;
+
+    private final String username;
+    private final String topic;
 
     public SubscribeHandler(String username, String topic) {
         this.username = username;

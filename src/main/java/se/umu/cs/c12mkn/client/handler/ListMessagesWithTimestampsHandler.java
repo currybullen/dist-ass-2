@@ -17,7 +17,7 @@ import java.util.logging.Logger;
 public class ListMessagesWithTimestampsHandler extends CallHandler {
     private static final Logger logger = Logger.getLogger(ListMessagesWithTimestampsHandler.class.getName());
 
-    private String topic;
+    private final String topic;
     private Map<String, Long> timestamps;
 
     public ListMessagesWithTimestampsHandler(String topic) {

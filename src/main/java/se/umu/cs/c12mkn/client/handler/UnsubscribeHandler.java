@@ -12,8 +12,9 @@ import java.util.logging.Logger;
  */
 public class UnsubscribeHandler extends CallHandler {
     private static final Logger logger = Logger.getLogger(UnsubscribeHandler.class.getName());
-    private String username;
-    private String topic;
+
+    private final String username;
+    private final String topic;
 
     public UnsubscribeHandler(String username, String topic) {
         this.username = username;

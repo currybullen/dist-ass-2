@@ -13,7 +13,7 @@ import java.util.logging.Logger;
 public class InitAuthHandler extends CallHandler {
     private static final Logger logger = Logger.getLogger(InitAuthHandler.class.getName());
 
-    private String username;
+    private final String username;
     private String challenge;
 
     public InitAuthHandler(String username) {

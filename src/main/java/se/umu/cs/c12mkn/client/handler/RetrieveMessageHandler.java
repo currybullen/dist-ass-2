@@ -13,7 +13,7 @@ import java.util.logging.Logger;
 public class RetrieveMessageHandler extends CallHandler {
     private static final Logger logger = Logger.getLogger(RetrieveMessageHandler.class.getName());
 
-    private String id;
+    private final String id;
     private se.umu.cs.c12mkn.message.Message message;
 
     public RetrieveMessageHandler(String id) {

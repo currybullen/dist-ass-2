@@ -14,7 +14,7 @@ import java.util.logging.Logger;
 public class ListMessagesHandler extends CallHandler {
     private static final Logger logger = Logger.getLogger(ListMessagesHandler.class.getName());
 
-    private String topic;
+    private final String topic;
     private List<String> ids;
 
     public ListMessagesHandler(String topic) {

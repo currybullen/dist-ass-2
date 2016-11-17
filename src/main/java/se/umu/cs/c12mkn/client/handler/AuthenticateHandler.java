@@ -13,9 +13,9 @@ import java.util.logging.Logger;
 public class AuthenticateHandler extends CallHandler {
     private static final Logger logger = Logger.getLogger(AuthenticateHandler.class.getName());
 
-    private String username;
-    private String challenge;
-    private String answer;
+    private final String username;
+    private final String challenge;
+    private final String answer;
 
     public AuthenticateHandler(String username, String challenge, String answer) {
         this.username = username;
