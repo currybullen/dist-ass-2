@@ -21,6 +21,13 @@ public class MessageClient {
         blockingStub = MessageServiceGrpc.newBlockingStub(channel);
     }
 
+    public boolean rsaKeyExchange() {
+        RSAKeyExchangeHandler handler = new RSAKeyExchangeHandler();
+        RSARequest request = handler.setUp();
+        Session response = blockingStub.rSAKeyExchange(request);
+        return handler.handleResponse(response);
+    }
+
     public boolean performDHKeyExchange() {
         DHKeyExchangeHandler handler = new DHKeyExchangeHandler();
         DHParameters request = handler.setUp();
@@ -117,8 +124,8 @@ public class MessageClient {
         try {
             MessageClient messageClient = new MessageClient(args[0], Integer.parseInt(args[1]));
             SessionInfo.getInstance().setServerPublicKey(args[2]);
-            SessionInfo.getInstance().setAlgorithm("AES");
-            messageClient.performDHKeyExchange();
+            //messageClient.performDHKeyExchange();
+            messageClient.rsaKeyExchange();
             messageClient.initAuth("currybullen");
             messageClient.authenticate("currybullen", "nkSW4rs5", "ZfDPxY5Y");
             se.umu.cs.c12mkn.message.Message message = new Message("1",5,"micke","anna","bajs","hehe","tjoho".getBytes());

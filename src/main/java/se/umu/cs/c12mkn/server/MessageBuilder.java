@@ -12,6 +12,10 @@ import java.util.Map;
  * Created by c12mkn on 11/14/16.
  */
 public class MessageBuilder {
+    public static Session buildSessionMessage(String session) {
+        return Session.newBuilder().setValue(session).build();
+    }
+
     public static DHResponse buildDHResponse(PublicKey publicKey, String session) {
         return DHResponse.newBuilder()
                 .setPublicKey(toByteString(publicKey))

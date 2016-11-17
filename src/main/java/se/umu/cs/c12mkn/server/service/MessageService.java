@@ -108,4 +108,13 @@ public class MessageService extends MessageServiceGrpc.MessageServiceImplBase {
         responseObserver.onNext(response);
         responseObserver.onCompleted();
     }
+
+    @Override
+    public void rSAKeyExchange(RSARequest rsaRequest, StreamObserver<Session> responseObserver) {
+        RSAKeyExchangeHandler handler = new RSAKeyExchangeHandler();
+        Session response = handler.handle(rsaRequest);
+        responseObserver.onNext(response);
+        responseObserver.onCompleted();
+    }
+
 }

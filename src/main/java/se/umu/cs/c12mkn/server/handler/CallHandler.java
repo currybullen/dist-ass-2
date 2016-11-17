@@ -5,6 +5,7 @@ import se.umu.cs.c12mkn.grpc.EncryptedMessage;
 import se.umu.cs.c12mkn.grpc.Succeeded;
 import se.umu.cs.c12mkn.message.Message;
 import se.umu.cs.c12mkn.server.MessageBuilder;
+import se.umu.cs.c12mkn.server.ServerInfo;
 import se.umu.cs.c12mkn.server.security.Sessions;
 import se.umu.cs.c12mkn.shared.security.Crypt;
 
@@ -19,14 +20,16 @@ public class CallHandler {
     }
 
     protected byte[] decryptMessage(EncryptedMessage encryptedMessage) {
+        byte[] data = encryptedMessage.getContents().toByteArray();
         String session = encryptedMessage.getSession();
         String algorithm = sessions.getAlgorithm(session);
         if (algorithm.equals("AES")) {
-            return Crypt.decryptAES(encryptedMessage.getContents().toByteArray(),
+            return Crypt.decryptAES(data,
                     sessions.getSecretKey(session),
                     encryptedMessage.getIv().toByteArray());
         } else if (algorithm.equals("RSA")) {
-            //TODO: RSA decrypt call
+            return Crypt.decryptRSA(data,
+                    ServerInfo.getInstance().getPrivateKey());
         } else if (algorithm.equals("customAlgorithm")) {
             //TODO: Custom algorithm decrypt call
         }
@@ -42,7 +45,7 @@ public class CallHandler {
             iv = Crypt.generateIV();
             contents = Crypt.encryptAES(data, sessions.getSecretKey(session), iv);
         } else if (algorithm.equals("RSA")) {
-            //TODO: RSA encrypt call
+            contents = Crypt.encryptRSA(data, sessions.getPublicKey(session));
         } else if (algorithm.equals("customAlgorithm")) {
             //TODO: Custom algoritmh encrypt call
         } else {

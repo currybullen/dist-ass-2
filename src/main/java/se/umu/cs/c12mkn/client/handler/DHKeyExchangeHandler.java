@@ -42,6 +42,7 @@ public class DHKeyExchangeHandler extends CallHandler {
             byte[] publicKey = dhResponse.getPublicKey().toByteArray();
             SecretKey secretKey = DHKeyExchange.generateSecretKey(privateKey,
                     publicKey);
+            SessionInfo.getInstance().setAlgorithm("AES");
             SessionInfo.getInstance().setID(dhResponse.getSession());
             SessionInfo.getInstance().setSecretKey(secretKey);
             return true;

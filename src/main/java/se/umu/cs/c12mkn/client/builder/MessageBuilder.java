@@ -12,6 +12,11 @@ import java.security.PublicKey;
  * Created by c12mkn on 11/14/16.
  */
 public class MessageBuilder {
+    public static RSARequest buildRSARequestMessage(PublicKey publicKey) {
+        return RSARequest.newBuilder().setPublicKey(toByteString(publicKey))
+                .build();
+    }
+
     public static DHParameters buildDHParametersMessage(
             BigInteger modulus, BigInteger base, PublicKey publicKey) {
         return DHParameters.newBuilder().setModulus(toByteString(modulus))

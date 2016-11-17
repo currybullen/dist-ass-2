@@ -6,6 +6,10 @@ message Empty {
 
 }
 
+message RSARequest {
+    bytes publicKey = 1;
+}
+
 message DHParameters {
     bytes modulus = 1;
     bytes base = 2;
@@ -101,6 +105,8 @@ message Session {
 }
 
 service MessageService {
+    rpc RSAKeyExchange (RSARequest) returns (Session);
+
     rpc DHKeyExchange (DHParameters) returns (SignedDHResponse);
 
     rpc InitAuth (EncryptedMessage) returns (EncryptedMessage);
