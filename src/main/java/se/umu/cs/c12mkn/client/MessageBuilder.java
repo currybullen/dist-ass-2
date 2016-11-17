@@ -3,8 +3,6 @@ package se.umu.cs.c12mkn.client;
 import com.google.protobuf.ByteString;
 import se.umu.cs.c12mkn.grpc.*;
 import se.umu.cs.c12mkn.grpc.Message;
-import se.umu.cs.c12mkn.message.*;
-import se.umu.cs.c12mkn.shared.security.Crypt;
 
 import java.math.BigInteger;
 import java.security.PublicKey;
@@ -25,6 +23,7 @@ public class MessageBuilder {
     public static Username buildUsernameMessage(String username) {
         return Username.newBuilder().setValue(username).build();
     }
+
     public static EncryptedMessage buildEncryptedMessage(byte[] contents,
                                                          String session,
                                                          String algorithm,
