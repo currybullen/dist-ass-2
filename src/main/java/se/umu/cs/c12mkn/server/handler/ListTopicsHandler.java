@@ -12,8 +12,8 @@ import java.util.logging.Logger;
 /**
  * Created by currybullen on 11/16/16.
  */
-public class ListTopicsCallHandler extends CallHandler {
-    private static final Logger logger = Logger.getLogger(ListTopicsCallHandler.class.getName());
+public class ListTopicsHandler extends CallHandler {
+    private static final Logger logger = Logger.getLogger(ListTopicsHandler.class.getName());
 
     public EncryptedMessage handle(Session session) {
         logger.info("Received request for topic list");

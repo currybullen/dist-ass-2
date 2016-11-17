@@ -14,8 +14,8 @@ import java.util.logging.Logger;
 /**
  * Created by currybullen on 11/16/16.
  */
-public class InitAuthCallHandler extends CallHandler {
-    private static final Logger logger = Logger.getLogger(InitAuthCallHandler.class.getName());
+public class InitAuthHandler extends CallHandler {
+    private static final Logger logger = Logger.getLogger(InitAuthHandler.class.getName());
 
     public EncryptedMessage handle(EncryptedMessage encryptedMessage) {
         EncryptedMessage response = null;

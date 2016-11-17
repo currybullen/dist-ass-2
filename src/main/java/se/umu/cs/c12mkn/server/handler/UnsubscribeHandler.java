@@ -11,8 +11,8 @@ import java.util.logging.Logger;
 /**
  * Created by currybullen on 11/16/16.
  */
-public class UnsubscribeCallHandler extends CallHandler {
-    private static final Logger logger = Logger.getLogger(UnsubscribeCallHandler.class.getName());
+public class UnsubscribeHandler extends CallHandler {
+    private static final Logger logger = Logger.getLogger(UnsubscribeHandler.class.getName());
 
     public EncryptedMessage handle(EncryptedMessage request) {
         try {

@@ -13,8 +13,8 @@ import java.util.logging.Logger;
 /**
  * Created by currybullen on 11/16/16.
  */
-public class ListMessagesCallHandler extends CallHandler {
-    private static final Logger logger = Logger.getLogger(ListMessagesCallHandler.class.getName());
+public class ListMessagesHandler extends CallHandler {
+    private static final Logger logger = Logger.getLogger(ListMessagesHandler.class.getName());
 
     public EncryptedMessage handle(EncryptedMessage request) {
         try {

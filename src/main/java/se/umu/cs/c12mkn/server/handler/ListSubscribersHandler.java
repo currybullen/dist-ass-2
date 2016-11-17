@@ -12,8 +12,8 @@ import java.util.logging.Logger;
 /**
  * Created by currybullen on 11/16/16.
  */
-public class ListSubscribersCallHandler extends CallHandler {
-    private static final Logger logger = Logger.getLogger(ListSubscribersCallHandler.class.getName());
+public class ListSubscribersHandler extends CallHandler {
+    private static final Logger logger = Logger.getLogger(ListSubscribersHandler.class.getName());
 
     public EncryptedMessage handle(EncryptedMessage request) {
         try {

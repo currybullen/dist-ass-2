@@ -14,8 +14,8 @@ import java.util.logging.Logger;
 /**
  * Created by currybullen on 11/16/16.
  */
-public class ListMessagesWithTimestampsCallHandler extends CallHandler {
-    private static final Logger logger = Logger.getLogger(ListMessagesWithTimestampsCallHandler.class.getName());
+public class ListMessagesWithTimestampsHandler extends CallHandler {
+    private static final Logger logger = Logger.getLogger(ListMessagesWithTimestampsHandler.class.getName());
 
     public EncryptedMessage handle(EncryptedMessage request) {
         Map<String, Long> timestamps = new HashMap<String, Long>();
