@@ -55,6 +55,8 @@ public class Database {
      * @return a list of all messages of a specific topic.
      */
     public synchronized List<String> getMessagesByTopic(String topic) {
+        if (messagesByTopic.get(topic) == null)
+            return new ArrayList<String>();
         return messagesByTopic.get(topic);
     }
 
@@ -95,6 +97,8 @@ public class Database {
      * @return a list of all subscribers for a topic.
      */
     public synchronized List<String> getSubscribers(String topic) {
+        if (subscribers.get(topic) == null)
+            return new ArrayList<String>();
         return subscribers.get(topic);
     }
 
