@@ -15,10 +15,11 @@ import java.util.Map;
 public class MessageClient {
     private final MessageServiceGrpc.MessageServiceBlockingStub blockingStub;
 
-    public MessageClient(String host, int port) {
+    public MessageClient(String host, int port, byte[] publicKey) {
         ManagedChannel channel = ManagedChannelBuilder.forAddress(host, port).
                 usePlaintext(true).build();
         blockingStub = MessageServiceGrpc.newBlockingStub(channel);
+        SessionInfo.getInstance().setServerPublicKey(publicKey);
     }
 
     public boolean setUpCustomEncryption() {
@@ -125,33 +126,6 @@ public class MessageClient {
         EncryptedMessage response = blockingStub.listNodes(request);
         handler.handleResponse(response);
         return handler.getNodes();
-    }
-
-    public static void main(String[] args) {
-        try {
-            MessageClient messageClient = new MessageClient(args[0], Integer.parseInt(args[1]));
-            SessionInfo.getInstance().setServerPublicKey(args[2]);
-            //messageClient.performDHKeyExchange();
-            //messageClient.rsaKeyExchange();
-            messageClient.setUpCustomEncryption();
-            messageClient.initAuth("currybullen");
-            messageClient.authenticate("currybullen", "nkSW4rs5", "ZfDPxY5Y");
-            se.umu.cs.c12mkn.message.Message message = new Message("1",5,"micke","anna","bajs","hehe","tjoho".getBytes());
-            messageClient.postMessage(message);
-            se.umu.cs.c12mkn.message.Message message2 = new Message("2",6,"micke","anna","bajs1","hehe","tjoho".getBytes());
-            messageClient.postMessage(message2);
-            messageClient.listMessages("bajs");
-            messageClient.listMessagesWithTimestamps("bajs").get("2");
-            messageClient.retrieveMessage("2");
-            messageClient.listTopics();
-            messageClient.subscribe("currybullen", "bajs");
-            messageClient.unsubscribe("currybullen", "bajs");
-            messageClient.subscribe("paprikafix", "bajs");
-            messageClient.listSubscribers("bajs");
-            messageClient.listNodes();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
     }
 }
 
