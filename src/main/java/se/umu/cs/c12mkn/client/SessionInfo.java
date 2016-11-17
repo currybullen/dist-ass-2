@@ -1,8 +1,11 @@
 package se.umu.cs.c12mkn.client;
 
+import com.google.common.io.ByteStreams;
+
 import javax.crypto.SecretKey;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.nio.file.Files;
 import java.security.*;
 import java.security.spec.InvalidKeySpecException;
@@ -41,8 +44,8 @@ public class SessionInfo {
         return instance;
     }
 
-    public void setServerPublicKey(String path) {
-        serverPublicKey = loadServerPublicSignKey(path);
+    public void setServerPublicKey(byte[] publicKey) {
+        serverPublicKey = loadServerPublicKey(publicKey);
     }
 
     public PublicKey getServerPublicKey() {
@@ -73,14 +76,11 @@ public class SessionInfo {
         this.algorithm = algorithm;
     }
 
-    private PublicKey loadServerPublicSignKey(String path) {
+    private PublicKey loadServerPublicKey(byte[] keyBytes) {
         try {
-            byte[] keyBytes = Files.readAllBytes(new File(path).toPath());
             X509EncodedKeySpec x509EncodedKeySpec = new X509EncodedKeySpec(keyBytes);
             KeyFactory keyFactory = KeyFactory.getInstance("RSA");
             return keyFactory.generatePublic(x509EncodedKeySpec);
-        } catch (IOException e) {
-            e.printStackTrace();
         } catch (InvalidKeySpecException e) {
             e.printStackTrace();
         } catch (NoSuchAlgorithmException e) {
