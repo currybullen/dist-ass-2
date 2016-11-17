@@ -15,32 +15,37 @@ import java.util.List;
  */
 public class CallHandler {
     protected EncryptedMessage encryptMessage(byte[] data) {
-        EncryptedMessage encryptedMessage = null;
-
-        if (SessionInfo.getInstance().getAlgorithm().equals("AES")) {
+        String algorithm = SessionInfo.getInstance().getAlgorithm();
+        if (algorithm.equals("AES")) {
             byte[] iv = Crypt.generateIV();
-            byte[] encryptedData = Crypt.encryptAES(data, SessionInfo.getInstance().getSecretKey(), iv);
-            encryptedMessage = MessageBuilder.buildEncryptedMessage(encryptedData,
+            byte[] encryptedData = Crypt.encryptAES(data,
+                    SessionInfo.getInstance().getSecretKey(), iv);
+            return MessageBuilder.buildEncryptedMessage(encryptedData,
                     SessionInfo.getInstance().getID(),
                     SessionInfo.getInstance().getAlgorithm(),
                     iv);
+        } else if (algorithm.equals("RSA")) {
+            //TODO: Implement RSA encryption call
+        } else if (algorithm.equals("myAlgorithm")) {
+            //TODO: Implement custom algorithm call
         }
 
-        return encryptedMessage;
+        return null;
     }
 
     protected byte[] decryptMessage(EncryptedMessage encryptedMessage) {
-        byte[] data = null;
-
-        if (encryptedMessage.getAlgorithm().equals("AES")) {
-            data = Crypt.decryptAES(encryptedMessage.getContents().toByteArray(),
+        String algorithm = encryptedMessage.getAlgorithm();
+        if (algorithm.equals("AES")) {
+            return Crypt.decryptAES(encryptedMessage.getContents().toByteArray(),
                     SessionInfo.getInstance().getSecretKey(),
                     encryptedMessage.getIv().toByteArray());
-        } else if (encryptedMessage.getAlgorithm().equals("RSA")) {
+        } else if (algorithm.equals("RSA")) {
             //TODO: Implement RSA decryption call
+        } else if (algorithm.equals("myAlgorithm")) {
+            //TODO Implement custom algorithm call
         }
 
-        return data;
+        return null;
     }
 
     protected List<String> toStringList(ProtocolStringList originalList) {

@@ -91,16 +91,14 @@ public class MessageClient {
         SubscribeHandler handler = new SubscribeHandler(username, topic);
         EncryptedMessage request = handler.setUp();
         EncryptedMessage response = blockingStub.subscribe(request);
-        handler.handleResponse(response);
-        return handler.getSucceeded();
+        return handler.handleResponse(response);
     }
 
     public boolean unsubscribe(String username, String topic) {
         UnsubscribeHandler handler = new UnsubscribeHandler(username, topic);
         EncryptedMessage request = handler.setUp();
         EncryptedMessage response = blockingStub.unsubscribe(request);
-        handler.handleResponse(response);
-        return handler.getSucceeded();
+        return handler.handleResponse(response);
     }
 
     public List<String> listSubscribers(String topic) {

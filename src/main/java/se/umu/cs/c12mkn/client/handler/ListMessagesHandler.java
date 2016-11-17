@@ -25,14 +25,17 @@ public class ListMessagesHandler extends CallHandler {
         return encryptMessage(MessageBuilder.buildTopicMessage(topic).toByteArray());
     }
 
-    public void handleResponse(EncryptedMessage response) {
+    public boolean handleResponse(EncryptedMessage response) {
         try {
             TopicList topicList = TopicList.parseFrom(decryptMessage(response));
             ids = toStringList(topicList.getTopicsList());
             logger.info("Received a message list of length " + ids.size() + ".");
+            return true;
         } catch (InvalidProtocolBufferException e) {
             e.printStackTrace();
         }
+
+        return false;
     }
 
     public List<String> getIDs() {

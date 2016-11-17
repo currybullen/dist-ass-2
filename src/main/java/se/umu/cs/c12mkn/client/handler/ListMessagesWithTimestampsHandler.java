@@ -28,15 +28,19 @@ public class ListMessagesWithTimestampsHandler extends CallHandler {
         return encryptMessage(MessageBuilder.buildTopicMessage(topic).toByteArray());
     }
 
-    public void handleResponse(EncryptedMessage response) {
+    public boolean handleResponse(EncryptedMessage response) {
         try {
             MessageListWithTimestamps list = MessageListWithTimestamps.
                     parseFrom(decryptMessage(response));
-            logger.info("Received a message timestamp list of length " + list.getTimestampsList().size() + ".");
+            logger.info("Received a message timestamp list of length " +
+                    list.getTimestampsList().size() + ".");
             timestamps = toHashMap(list.getTimestampsList());
+            return true;
         } catch (InvalidProtocolBufferException e) {
             e.printStackTrace();
         }
+
+        return false;
     }
 
     public Map<String, Long> getTimestamps() {

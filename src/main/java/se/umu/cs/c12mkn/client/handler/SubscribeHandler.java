@@ -14,12 +14,10 @@ public class SubscribeHandler extends CallHandler {
     private static final Logger logger = Logger.getLogger(SubscribeHandler.class.getName());
     private String username;
     private String topic;
-    private boolean succeeded;
 
     public SubscribeHandler(String username, String topic) {
         this.username = username;
         this.topic = topic;
-        succeeded = false;
     }
 
     public EncryptedMessage setUp() {
@@ -27,16 +25,16 @@ public class SubscribeHandler extends CallHandler {
         return encryptMessage(MessageBuilder.buildSubscriberInfoMessage(username, topic).toByteArray());
     }
 
-    public void handleResponse(EncryptedMessage response) {
+    public boolean handleResponse(EncryptedMessage response) {
         try {
             Succeeded succeeded = Succeeded.parseFrom(decryptMessage(response));
-            this.succeeded = succeeded.getValue();
+            if (succeeded.getValue())
+                logger.info("Successfully subscribed user '" + username + "'.");
+            return succeeded.getValue();
         } catch (InvalidProtocolBufferException e) {
             e.printStackTrace();
         }
-    }
 
-    public boolean getSucceeded() {
-        return succeeded;
+        return false;
     }
 }

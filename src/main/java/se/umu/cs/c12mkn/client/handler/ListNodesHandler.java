@@ -23,14 +23,18 @@ public class ListNodesHandler extends CallHandler {
         return MessageBuilder.buildSessionMessage(SessionInfo.getInstance().getID());
     }
 
-    public void handleResponse(EncryptedMessage response) {
+    public boolean handleResponse(EncryptedMessage response) {
         try {
             NodeList nodeList = NodeList.parseFrom(decryptMessage(response));
-            logger.info("Received list of nodes of length " + nodeList.getNodesList().size() + ".");
+            logger.info("Received list of nodes of length " +
+                    nodeList.getNodesList().size() + ".");
             nodes = toStringList(nodeList.getNodesList());
+            return true;
         } catch (InvalidProtocolBufferException e) {
             e.printStackTrace();
         }
+
+        return false;
     }
 
     public List<String> getNodes() {

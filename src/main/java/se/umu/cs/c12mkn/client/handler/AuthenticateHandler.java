@@ -24,6 +24,7 @@ public class AuthenticateHandler extends CallHandler {
     }
 
     public EncryptedMessage setUp() {
+        logger.info("Sending authentication request");
         return encryptMessage(MessageBuilder.buildAuthResponseMessage(username, challenge, answer).toByteArray());
     }
 

@@ -24,14 +24,17 @@ public class InitAuthHandler extends CallHandler {
         return encryptMessage(MessageBuilder.buildUsernameMessage(username).toByteArray());
     }
 
-    public void handleResponse(EncryptedMessage encryptedMessage) {
+    public boolean handleResponse(EncryptedMessage encryptedMessage) {
         try {
             Challenge challenge = Challenge.parseFrom(decryptMessage(encryptedMessage));
             this.challenge = challenge.getValue();
             logger.info("Challenge received: '" + challenge.getValue() + "'.");
+            return true;
         } catch (InvalidProtocolBufferException e) {
             e.printStackTrace();
         }
+
+        return false;
     }
 
     public String getChallenge() {

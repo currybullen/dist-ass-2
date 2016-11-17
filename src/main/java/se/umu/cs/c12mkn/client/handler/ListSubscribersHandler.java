@@ -22,17 +22,22 @@ public class ListSubscribersHandler extends CallHandler {
     }
 
     public EncryptedMessage setUp() {
+        logger.info("Requesting subscriber list for topic '" + topic + "'.");
         return encryptMessage(MessageBuilder.buildTopicMessage(topic).toByteArray());
     }
 
-    public void handleResponse(EncryptedMessage response) {
+    public boolean handleResponse(EncryptedMessage response) {
         try {
-            logger.info("Requesting subscriber list for topic '" + topic + "'.");
             SubscriberList subscriberList = SubscriberList.parseFrom(decryptMessage(response));
-            this.subscribers = toStringList(subscriberList.getUsernameList());
+            subscribers = toStringList(subscriberList.getUsernameList());
+            logger.info("Received a subscriber list for topic '" +
+                    topic + "' of length "  + subscribers.size() + ".");
+            return true;
         } catch (InvalidProtocolBufferException e) {
             e.printStackTrace();
         }
+
+        return false;
     }
 
     public List<String> getSubscribers() {

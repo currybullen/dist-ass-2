@@ -25,14 +25,17 @@ public class RetrieveMessageHandler extends CallHandler {
         return encryptMessage(MessageBuilder.buildIDMessage(id).toByteArray());
     }
 
-    public void handleResponse(EncryptedMessage response) {
+    public boolean handleResponse(EncryptedMessage response) {
         try {
             logger.info("Retrieved message with id' " + id + "'.");
             Message message = Message.parseFrom(decryptMessage(response));
             this.message = convertMessage(message);
+            return true;
         } catch (InvalidProtocolBufferException e) {
             e.printStackTrace();
         }
+
+        return false;
     }
 
     public se.umu.cs.c12mkn.message.Message getMessage() {
