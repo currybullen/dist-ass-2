@@ -8,30 +8,24 @@ import se.umu.cs.c12mkn.message.Message;
 
 import java.util.List;
 import java.util.Map;
-import java.util.logging.Logger;
 
 /**
  * Created by currybullen on 11/12/16.
  */
 public class MessageClient {
-    private static final Logger logger = Logger.getLogger(MessageClient.class.getName());
-
-    private final ManagedChannel channel;
     private final MessageServiceGrpc.MessageServiceBlockingStub blockingStub;
-    private final MessageBuilder messageBuilder;
 
     public MessageClient(String host, int port) {
-        channel = ManagedChannelBuilder.forAddress(host, port).usePlaintext(true).build();
+        ManagedChannel channel = ManagedChannelBuilder.forAddress(host, port).
+                usePlaintext(true).build();
         blockingStub = MessageServiceGrpc.newBlockingStub(channel);
-        messageBuilder = new MessageBuilder();
     }
 
-    public void performDHKeyExchange() {
+    public boolean performDHKeyExchange() {
         DHKeyExchangeHandler handler = new DHKeyExchangeHandler();
         DHParameters request = handler.setUp();
-        logger.info("DH exchange request sent.");
         SignedDHResponse response = blockingStub.dHKeyExchange(request);
-        handler.handleResponse(response);
+        return handler.handleResponse(response);
     }
 
     public String initAuth(String username) {
@@ -42,16 +36,18 @@ public class MessageClient {
         return handler.getChallenge();
     }
 
-    public void authenticate(String username, String challenge, String answer) {
+    public boolean authenticate(String username, String challenge, String answer) {
         AuthenticateHandler handler = new AuthenticateHandler(username, challenge, answer);
         EncryptedMessage request = handler.setUp();
-        blockingStub.authenticate(request);
+        EncryptedMessage response = blockingStub.authenticate(request);
+        return handler.handleResponse(response);
     }
 
-    public void postMessage(Message message) {
+    public boolean postMessage(Message message) {
         PostMessageHandler handler = new PostMessageHandler(message);
         EncryptedMessage request = handler.setUp();
-        blockingStub.postMessage(request);
+        EncryptedMessage response = blockingStub.postMessage(request);
+        return handler.handleResponse(response);
     }
 
     public List<String> listMessages(String topic) {

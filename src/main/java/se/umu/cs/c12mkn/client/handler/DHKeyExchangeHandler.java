@@ -29,6 +29,7 @@ public class DHKeyExchangeHandler extends CallHandler {
         BigInteger base = dhParameterSpec.getG();
         KeyPair keyPair = DHKeyExchange.generateKeyPair(modulus, base);
         privateKey = keyPair.getPrivate();
+        logger.info("Sending DH Key exchange request");
         return MessageBuilder.buildDHParametersMessage(modulus, base, keyPair.getPublic());
     }
 
