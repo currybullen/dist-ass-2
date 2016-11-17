@@ -26,6 +26,23 @@ public class MessageBuilder {
                 .build();
     }
 
+    public static EncryptedMessage buildEncryptedMessage(
+            byte[] contents, String session, String algorithm, byte[] iv) {
+        return EncryptedMessage.newBuilder().setContents(toByteString(contents))
+                .setSession(session)
+                .setAlgorithm(algorithm)
+                .setIv(toByteString(iv))
+                .build();
+    }
+
+    public static EncryptedMessage buildEncryptedMessage(
+            byte[] contents, String session, String algorithm) {
+        return EncryptedMessage.newBuilder().setContents(toByteString(contents))
+                .setSession(session)
+                .setAlgorithm(algorithm)
+                .build();
+    }
+
     public static Challenge buildChallengeMessage(String challenge) {
         return Challenge.newBuilder().setValue(challenge).build();
     }

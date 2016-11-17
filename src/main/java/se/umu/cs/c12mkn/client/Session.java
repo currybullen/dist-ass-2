@@ -14,8 +14,8 @@ import java.security.spec.X509EncodedKeySpec;
 /**
  * Created by c12mkn on 11/14/16.
  */
-public class SessionInfo {
-    private static SessionInfo instance = new SessionInfo();
+public class Session {
+    private static Session instance = new Session();
 
     private final DHParameterSpec dhParameterSpec;
     private final KeyPair dhKeys;
@@ -24,12 +24,12 @@ public class SessionInfo {
     private SecretKey secretKey;
     private String algorithm;
 
-    private SessionInfo() {
+    private Session() {
         dhParameterSpec = DHKeyExchange.generateParameters();
         dhKeys = DHKeyExchange.generateKeyPair(dhParameterSpec.getP(), dhParameterSpec.getG());
     }
 
-    public static SessionInfo getInstance() {
+    public static Session getInstance() {
         return instance;
     }
 

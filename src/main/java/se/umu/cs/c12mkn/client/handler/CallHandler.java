@@ -3,7 +3,7 @@ package se.umu.cs.c12mkn.client.handler;
 import com.google.protobuf.ByteString;
 import com.google.protobuf.ProtocolStringList;
 import se.umu.cs.c12mkn.client.MessageBuilder;
-import se.umu.cs.c12mkn.client.SessionInfo;
+import se.umu.cs.c12mkn.client.Session;
 import se.umu.cs.c12mkn.grpc.EncryptedMessage;
 import se.umu.cs.c12mkn.shared.security.Crypt;
 
@@ -15,14 +15,14 @@ import java.util.List;
  */
 public class CallHandler {
     protected EncryptedMessage encryptMessage(byte[] data) {
-        String algorithm = SessionInfo.getInstance().getAlgorithm();
+        String algorithm = Session.getInstance().getAlgorithm();
         if (algorithm.equals("AES")) {
             byte[] iv = Crypt.generateIV();
             byte[] encryptedData = Crypt.encryptAES(data,
-                    SessionInfo.getInstance().getSecretKey(), iv);
+                    Session.getInstance().getSecretKey(), iv);
             return MessageBuilder.buildEncryptedMessage(encryptedData,
-                    SessionInfo.getInstance().getID(),
-                    SessionInfo.getInstance().getAlgorithm(),
+                    Session.getInstance().getID(),
+                    Session.getInstance().getAlgorithm(),
                     iv);
         } else if (algorithm.equals("RSA")) {
             //TODO: Implement RSA encryption call
@@ -37,7 +37,7 @@ public class CallHandler {
         String algorithm = encryptedMessage.getAlgorithm();
         if (algorithm.equals("AES")) {
             return Crypt.decryptAES(encryptedMessage.getContents().toByteArray(),
-                    SessionInfo.getInstance().getSecretKey(),
+                    Session.getInstance().getSecretKey(),
                     encryptedMessage.getIv().toByteArray());
         } else if (algorithm.equals("RSA")) {
             //TODO: Implement RSA decryption call

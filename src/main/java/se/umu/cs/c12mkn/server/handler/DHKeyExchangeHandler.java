@@ -16,7 +16,8 @@ import java.util.logging.Logger;
  * Created by currybullen on 11/16/16.
  */
 public class DHKeyExchangeHandler {
-    private static final Logger logger = Logger.getLogger(DHKeyExchangeHandler.class.getName());
+    private static final Logger logger =
+            Logger.getLogger(DHKeyExchangeHandler.class.getName());
 
     public SignedDHResponse handle(DHParameters dhParameters) {
         logger.info("DH key exchange request received.");
@@ -26,8 +27,11 @@ public class DHKeyExchangeHandler {
         SecretKey secretKey = DHKeyExchange.generateSecretKey(
                 keyPair.getPrivate(), dhParameters.getPublicKey().toByteArray());
         String session = Sessions.getInstance().createSession("AES", secretKey);
-        DHResponse dhResponse = MessageBuilder.buildDHResponse(keyPair.getPublic(), session);
-        return MessageBuilder.buildSignedDHResponse(dhResponse, sign(dhResponse.toByteArray()));
+        DHResponse dhResponse = MessageBuilder.buildDHResponse(
+                keyPair.getPublic(), session);
+        logger.info("Returning signed DH response.");
+        return MessageBuilder.buildSignedDHResponse(dhResponse,
+                sign(dhResponse.toByteArray()));
     }
 
     private byte[] sign(byte[] data) {

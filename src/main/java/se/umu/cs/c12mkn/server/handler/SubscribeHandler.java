@@ -16,11 +16,17 @@ public class SubscribeHandler extends CallHandler {
 
     public EncryptedMessage handle(EncryptedMessage request) {
         try {
-            SubscriberInfo subscriberInfo = SubscriberInfo.parseFrom(decryptMessage(request));
-            logger.info("Received subscribe request for user " + subscriberInfo.getUsername() + " and topic " + subscriberInfo.getTopic() + ".");
-            boolean succeeded = Database.getInstance().addSubscriber(subscriberInfo.getTopic(),
-                    subscriberInfo.getUsername());
-            return encryptMessage(MessageBuilder.buildSucceededMessage(succeeded).toByteArray(), request.getSession());
+            SubscriberInfo subscriberInfo =
+                    SubscriberInfo.parseFrom(decryptMessage(request));
+            logger.info("Received subscribe request for user " +
+                    subscriberInfo.getUsername() + " and topic " +
+                    subscriberInfo.getTopic() + ".");
+            boolean succeeded = Database.getInstance().
+                    addSubscriber(subscriberInfo.getTopic(),
+                            subscriberInfo.getUsername());
+            return encryptMessage(MessageBuilder.
+                    buildSucceededMessage(succeeded).toByteArray(),
+                    request.getSession());
         } catch (InvalidProtocolBufferException e) {
             e.printStackTrace();
         }

@@ -5,7 +5,6 @@ import se.umu.cs.c12mkn.grpc.Session;
 import se.umu.cs.c12mkn.server.MessageBuilder;
 import se.umu.cs.c12mkn.server.database.Database;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -18,9 +17,8 @@ public class ListTopicsHandler extends CallHandler {
     public EncryptedMessage handle(Session session) {
         logger.info("Received request for topic list");
         List<String> topics = Database.getInstance().getTopics();
-        if (topics == null)
-            topics = new ArrayList<String>();
         logger.info("Returning a topic list of length " + topics.size() + ".");
-        return encryptMessage(MessageBuilder.buildTopicList(topics).toByteArray(), session.getValue());
+        return encryptMessage(MessageBuilder.buildTopicList(topics).toByteArray(),
+                session.getValue());
     }
 }

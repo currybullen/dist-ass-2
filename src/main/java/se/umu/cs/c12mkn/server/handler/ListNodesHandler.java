@@ -17,6 +17,7 @@ public class ListNodesHandler extends CallHandler {
     public EncryptedMessage handle(Session session) {
         List<String> nodes = Database.getInstance().getNodes();
         logger.info("Sending node list of length " + nodes.size() + ".");
-        return encryptMessage(MessageBuilder.buildNodeList(nodes).toByteArray(), session.getValue());
+        return encryptMessage(MessageBuilder.buildNodeList(nodes).toByteArray(),
+                session.getValue());
     }
 }

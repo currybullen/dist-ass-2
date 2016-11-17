@@ -24,19 +24,17 @@ public class ListMessagesWithTimestampsHandler extends CallHandler {
             Topic topic = Topic.parseFrom(decryptMessage(request));
             logger.info("Received timestamps list request for topic '" + topic.getValue() + "'.");
             List<String> ids = Database.getInstance().getMessagesByTopic(topic.getValue());
-
-            if (ids != null) {
-                for (String id : ids) {
-                    long timestamp = Database.getInstance().getMessage(id).getTimestamp();
-                    timestamps.put(id, timestamp);
-                }
+            for (String id : ids) {
+                long timestamp = Database.getInstance().getMessage(id).getTimestamp();
+                timestamps.put(id, timestamp);
             }
         } catch (InvalidProtocolBufferException e) {
             e.printStackTrace();
         }
 
         logger.info("Returning a list of length " + timestamps.entrySet().size());
-        return encryptMessage(MessageBuilder.buildMessageListWithTimestampsMessage(timestamps).toByteArray(),
+        return encryptMessage(MessageBuilder.
+                buildMessageListWithTimestampsMessage(timestamps).toByteArray(),
                 request.getSession());
     }
 }

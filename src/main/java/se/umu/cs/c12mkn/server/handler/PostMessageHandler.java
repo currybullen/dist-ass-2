@@ -17,15 +17,16 @@ public class PostMessageHandler extends CallHandler {
     public EncryptedMessage handle(EncryptedMessage request) {
         try {
             Message message = Message.parseFrom(decryptMessage(request));
-            logger.info("Message with id '" + message.getId() + "' received, storing.");
+            logger.info("Message with id '" + message.getId() +
+                    "' received, storing.");
             Database.getInstance().addMessage(convertMessage(message));
-            return encryptMessage(MessageBuilder.buildSucceededMessage(true).toByteArray(),
-                    request.getSession());
+            return encryptMessage(MessageBuilder.buildSucceededMessage(true).
+                    toByteArray(), request.getSession());
         } catch (InvalidProtocolBufferException e) {
             e.printStackTrace();
         }
 
-        return encryptMessage(MessageBuilder.buildSucceededMessage(false).toByteArray(),
-                request.getSession());
+        return encryptMessage(MessageBuilder.buildSucceededMessage(false).
+                toByteArray(), request.getSession());
     }
 }

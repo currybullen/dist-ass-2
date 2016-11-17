@@ -18,10 +18,13 @@ public class ListSubscribersHandler extends CallHandler {
     public EncryptedMessage handle(EncryptedMessage request) {
         try {
             Topic topic = Topic.parseFrom(decryptMessage(request));
-            logger.info("Received request for subscriber list for topic '" + topic.getValue() + "'.");
-            List<String> subscribers = Database.getInstance().getSubscribers(topic.getValue());
+            logger.info("Received request for subscriber list for topic '" +
+                    topic.getValue() + "'.");
+            List<String> subscribers = Database.getInstance().
+                    getSubscribers(topic.getValue());
             logger.info("Returning a list of length " + subscribers.size() + ".");
-            return encryptMessage(MessageBuilder.buildSubscriberList(subscribers).toByteArray(), request.getSession());
+            return encryptMessage(MessageBuilder.buildSubscriberList(subscribers).
+                    toByteArray(), request.getSession());
         } catch (InvalidProtocolBufferException e) {
             e.printStackTrace();
         }

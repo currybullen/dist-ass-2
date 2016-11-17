@@ -77,7 +77,7 @@ public class MessageClient {
 
     public List<String> listTopics() {
         ListTopicsHandler handler = new ListTopicsHandler();
-        Session request = handler.setUp();
+        se.umu.cs.c12mkn.grpc.Session request = handler.setUp();
         EncryptedMessage response = blockingStub.listTopics(request);
         handler.handleResponse(response);
         return handler.getTopics();
@@ -107,7 +107,7 @@ public class MessageClient {
 
     public List<String> listNodes() {
         ListNodesHandler handler = new ListNodesHandler();
-        Session request = handler.setUp();
+        se.umu.cs.c12mkn.grpc.Session request = handler.setUp();
         EncryptedMessage response = blockingStub.listNodes(request);
         handler.handleResponse(response);
         return handler.getNodes();
@@ -116,8 +116,8 @@ public class MessageClient {
     public static void main(String[] args) {
         try {
             MessageClient messageClient = new MessageClient(args[0], Integer.parseInt(args[1]));
-            SessionInfo.getInstance().setServerPublicSignKey(args[2]);
-            SessionInfo.getInstance().setAlgorithm("AES");
+            Session.getInstance().setServerPublicSignKey(args[2]);
+            Session.getInstance().setAlgorithm("AES");
             messageClient.performDHKeyExchange();
             messageClient.initAuth("currybullen");
             messageClient.authenticate("currybullen", "nkSW4rs5", "ZfDPxY5Y");

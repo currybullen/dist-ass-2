@@ -1,6 +1,6 @@
 package se.umu.cs.c12mkn.client.handler;
 
-import se.umu.cs.c12mkn.client.SessionInfo;
+import se.umu.cs.c12mkn.client.Session;
 import se.umu.cs.c12mkn.client.MessageBuilder;
 import se.umu.cs.c12mkn.client.security.Verify;
 import se.umu.cs.c12mkn.grpc.DHParameters;
@@ -42,8 +42,8 @@ public class DHKeyExchangeHandler extends CallHandler {
             byte[] publicKey = dhResponse.getPublicKey().toByteArray();
             SecretKey secretKey = DHKeyExchange.generateSecretKey(privateKey,
                     publicKey);
-            SessionInfo.getInstance().setID(dhResponse.getSession());
-            SessionInfo.getInstance().setSecretKey(secretKey);
+            Session.getInstance().setID(dhResponse.getSession());
+            Session.getInstance().setSecretKey(secretKey);
             return true;
         } else {
             logger.info("Sender could not be verified!");
@@ -52,6 +52,6 @@ public class DHKeyExchangeHandler extends CallHandler {
     }
 
     private boolean verify(byte[] data, byte[] signature) {
-        return Verify.verify(data, signature, SessionInfo.getInstance().getServerPublicSignKey());
+        return Verify.verify(data, signature, Session.getInstance().getServerPublicSignKey());
     }
 }

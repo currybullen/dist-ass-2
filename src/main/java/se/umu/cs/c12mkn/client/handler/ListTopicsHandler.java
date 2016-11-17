@@ -2,9 +2,8 @@ package se.umu.cs.c12mkn.client.handler;
 
 import com.google.protobuf.InvalidProtocolBufferException;
 import se.umu.cs.c12mkn.client.MessageBuilder;
-import se.umu.cs.c12mkn.client.SessionInfo;
+import se.umu.cs.c12mkn.client.Session;
 import se.umu.cs.c12mkn.grpc.EncryptedMessage;
-import se.umu.cs.c12mkn.grpc.Session;
 import se.umu.cs.c12mkn.grpc.TopicList;
 
 import java.util.List;
@@ -18,9 +17,9 @@ public class ListTopicsHandler extends CallHandler {
 
     private List<String> topics;
 
-    public Session setUp() {
+    public se.umu.cs.c12mkn.grpc.Session setUp() {
         logger.info("Requesting a topic list.");
-        return MessageBuilder.buildSessionMessage(SessionInfo.getInstance().getID());
+        return MessageBuilder.buildSessionMessage(Session.getInstance().getID());
     }
 
     public void handleResponse(EncryptedMessage response) {

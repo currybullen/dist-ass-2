@@ -16,11 +16,17 @@ public class UnsubscribeHandler extends CallHandler {
 
     public EncryptedMessage handle(EncryptedMessage request) {
         try {
-            SubscriberInfo subscriberInfo = SubscriberInfo.parseFrom(decryptMessage(request));
-            logger.info("Received unsubscribe request for user " + subscriberInfo.getUsername() + " and topic " + subscriberInfo.getTopic() + ".");
-            boolean succeeded = Database.getInstance().removeSubscriber(subscriberInfo.getTopic(),
+            SubscriberInfo subscriberInfo =
+                    SubscriberInfo.parseFrom(decryptMessage(request));
+            logger.info("Received unsubscribe request for user " +
+                    subscriberInfo.getUsername() + " and topic " +
+                    subscriberInfo.getTopic() + ".");
+            boolean succeeded = Database.getInstance()
+                    .removeSubscriber(subscriberInfo.getTopic(),
                     subscriberInfo.getUsername());
-            return encryptMessage(MessageBuilder.buildSucceededMessage(succeeded).toByteArray(), request.getSession());
+            return encryptMessage(MessageBuilder.
+                    buildSucceededMessage(succeeded).toByteArray(),
+                    request.getSession());
         } catch (InvalidProtocolBufferException e) {
             e.printStackTrace();
         }

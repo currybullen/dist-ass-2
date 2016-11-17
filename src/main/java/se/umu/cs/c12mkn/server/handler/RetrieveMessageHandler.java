@@ -18,9 +18,11 @@ public class RetrieveMessageHandler extends CallHandler {
     public EncryptedMessage handle(EncryptedMessage request) {
         try {
             Id id = Id.parseFrom(decryptMessage(request));
-            logger.info("Received a request for message with id '" + id.getValue() + "'.");
+            logger.info("Received a request for message with id '" +
+                    id.getValue() + "'.");
             Message message = Database.getInstance().getMessage(id.getValue());
-            return encryptMessage(MessageBuilder.buildMessage(message).toByteArray(), request.getSession());
+            return encryptMessage(MessageBuilder.buildMessage(message).
+                    toByteArray(), request.getSession());
         } catch (InvalidProtocolBufferException e) {
             e.printStackTrace();
         }
