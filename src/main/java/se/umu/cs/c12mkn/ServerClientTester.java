@@ -116,7 +116,7 @@ public class ServerClientTester {
 
         System.out.println("Retrieving a list of 'Viktigt' subscribers.");
         List<String> subscribers = messageClient.listSubscribers("Viktigt");
-        System.out.println("List of subscribers: " + subscribers.toString());
+        System.out.println("List of subscribers: " + subscribers.toString() + "\n");
 
         System.out.println("Retrieving a list of nodes.");
         List<String> nodes = messageClient.listNodes();
