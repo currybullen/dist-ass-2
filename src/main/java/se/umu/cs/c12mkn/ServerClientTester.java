@@ -21,13 +21,20 @@ public class ServerClientTester {
 
 
     public static void main(String[] args) {
-        if (args.length < 2) {
-            System.err.println("Not enough arguments");
-            System.exit(1);
+        String algorithm = "custom";
+        int port = 1337;
+        if (args.length == 0) {
+            System.out.println("No arguments provided, defaulting to port " +
+                    "1337 and custom encryption algorithm.\n");
+        } else if (args.length == 1) {
+            System.out.println("No encryption algorithm provided, " +
+                    "defaulting to custom.\n");
+            port = Integer.parseInt(args[0]);
+        } else {
+            port = Integer.parseInt(args[0]);
+            algorithm = args[1];
         }
 
-        int port = Integer.parseInt(args[0]);
-        String algorithm = args[1];
         LogManager.getLogManager().reset();
         new ServerClientTester(port, algorithm).run();
     }
@@ -62,12 +69,23 @@ public class ServerClientTester {
         MessageClient messageClient =
                 new MessageClient("localhost", port, publicKey);
 
-        if (algorithm.equals("RSA"))
+        if (algorithm.equals("RSA")) {
+            System.out.println("Performing tests using public key exchange " +
+                    "and RSA encryption.\n");
             messageClient.rsaKeyExchange();
-        if (algorithm.equals("AES"))
+        }
+
+        if (algorithm.equals("AES")) {
+            System.out.println("Performing tests using Diffie-Hellman key " +
+                    "exchange and AES encryption.\n");
             messageClient.performDHKeyExchange();
-        if (algorithm.equals("custom"))
+        }
+
+        if (algorithm.equals("custom")) {
+            System.out.println("Performing tests using custom encryption method.\n");
             messageClient.setUpCustomEncryption();
+        }
+
 
         String challenge = messageClient.initAuth("currybullen");
         System.out.println("User 'currybullen' receives challenge '" +
